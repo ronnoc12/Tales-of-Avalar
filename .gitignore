@@ -218,3 +218,9 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Claude progress notes (local only)
+scratch/
+
+# Campaign source docs: tracked for now (may be removed later)
+!lib/

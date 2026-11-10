@@ -1,0 +1,28 @@
+# Runs the same fast checks as CI before each commit.
+# Enable once with:  python -m uv run pre-commit install
+# Skip once with:    git commit --no-verify
+repos:
+  - repo: local
+    hooks:
+      - id: ruff-format
+        name: ruff format
+        entry: python -m uv run ruff format
+        language: system
+        types: [python]
+      - id: ruff-check
+        name: ruff check
+        entry: python -m uv run ruff check --fix
+        language: system
+        types: [python]
+      - id: mypy
+        name: mypy
+        entry: python -m uv run mypy src
+        language: system
+        types: [python]
+        pass_filenames: false
+      - id: chronicler-validate
+        name: chronicler validate
+        entry: python -m uv run chronicler validate campaign --errors-only
+        language: system
+        files: ^campaign/
+        pass_filenames: false

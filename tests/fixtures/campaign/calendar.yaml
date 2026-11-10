@@ -1,0 +1,10 @@
+months: [Thawmoon, Seedmoon, Bloommoon, Sunmoon, Highmoon, Embermoon, Harvestmoon, Fallmoon, Mistmoon, Frostmoon, Deepmoon, Darkmoon]
+weekdays: [Moonday, Tideday, Windday, Thunderday, Fireday, Starday, Sunday]
+days_per_month: 30
+era_suffix: AS
+before_suffix: BS
+epoch_weekday: 0
+eras:
+  - { name: Era of Darkness, start: 0, end: 600 }
+  - { name: Reformation, start: 600, end: 1100 }
+  - { name: Modern, start: 1100 }
