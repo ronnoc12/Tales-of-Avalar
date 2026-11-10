@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Issues{% endblock %}
+{% block content %}
+<h1 class="page-title">Issues</h1>
+{% set errors = issues | selectattr('level', 'equalto', 'error') | list %}
+<p class="hint">{{ errors | length }} error(s), {{ issues | length - errors | length }} warning(s). Same checks as <code>chronicler validate</code>.</p>
+{% if issues %}
+<table class="table">
+  <thead><tr><th>Level</th><th>Where</th><th>Problem</th></tr></thead>
+  <tbody>
+    {% for i in issues %}
+      <tr class="issue-{{ i.level }}">
+        <td>{{ i.level }}</td>
+        <td>{% if i.entry_id %}<a href="/entry/{{ i.entry_id }}">{{ i.file }}</a>{% else %}{{ i.file }}{% endif %}{% if i.line %}:{{ i.line }}{% endif %}{% if i.field %} <span class="muted">[{{ i.field }}]</span>{% endif %}</td>
+        <td>{{ i.message }} <span class="muted">({{ i.code }})</span></td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}<p class="empty">No problems found.</p>{% endif %}
+{% endblock %}

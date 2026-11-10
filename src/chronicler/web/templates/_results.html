@@ -1,0 +1,27 @@
+{% if result %}
+<div class="results">
+  {% if result.hits %}
+    <p class="hint">{{ result.hits | length }} entr{{ 'y' if result.hits | length == 1 else 'ies' }} for “{{ result.query }}”</p>
+    <ul class="hits">
+      {% for hit in result.hits %}
+        <li class="hit">
+          <a class="hit-title" href="/entry/{{ hit.entry_id }}">{{ hit.name }}</a>
+          <span class="muted">{{ type_labels.get(hit.type, hit.type) if type_labels else hit.type }}{% if hit.total_matches %} · {{ hit.total_matches }} match(es){% endif %}</span>
+          {% if hit.snippets %}
+            <ul class="snippets">
+              {% for s in hit.snippets %}
+                <li><a href="/entry/{{ hit.entry_id }}{% if s.section_slug %}#{{ s.section_slug }}{% endif %}">{{ s.before }}<mark>{{ s.match }}</mark>{{ s.after }}</a></li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="empty">Nothing found for “{{ result.query }}”.
+      {% if result.suggestions %}Did you mean:
+        {% for s in result.suggestions %}<a href="/search?q={{ s | urlencode }}">{{ s }}</a>{{ ", " if not loop.last }}{% endfor %}?
+      {% endif %}</p>
+  {% endif %}
+</div>
+{% endif %}

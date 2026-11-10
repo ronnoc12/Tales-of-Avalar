@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Not found{% endblock %}
+{% block content %}
+<h1 class="page-title">Lost in the mists</h1>
+<p>{{ what or "That page" }} could not be found{% if not gm %} in the player view{% endif %}.</p>
+<p><a href="/">Return home</a></p>
+{% endblock %}

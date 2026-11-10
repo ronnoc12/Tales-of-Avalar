@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}{{ label }}{% endblock %}
+{% block content %}
+<h1 class="page-title">{{ label }}</h1>
+{% if entries %}
+  <ul class="browse-list">
+    {% for doc, depth in entries %}
+      <li style="--depth: {{ depth }}"><a href="/entry/{{ doc.id }}">{{ doc.name }}</a>
+        {% if gm and doc.meta.get('status', 'canon') != 'canon' %}<span class="badge badge-status badge-{{ doc.meta.status }}">{{ doc.meta.status }}</span>{% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}<p class="empty">Nothing here yet.</p>{% endif %}
+{% endblock %}

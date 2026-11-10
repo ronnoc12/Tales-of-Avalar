@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}{{ doc.name }}{% endblock %}
+{% block content %}
+<article class="entry entry-{{ doc.type }}">
+  <header class="entry-head">
+    <p class="crumbs"><a href="/browse/{{ doc.type }}">{{ type_label }}</a>
+      {% if parent %} › <a href="/entry/{{ parent[0] }}">{{ parent[1] }}</a>{% endif %}</p>
+    <h1 class="page-title">{{ title }}</h1>
+    <p class="entry-badges">
+      {% if gm and status != 'canon' %}<span class="badge badge-status badge-{{ status }}">{{ status }}</span>{% endif %}
+      {% if secret_entry %}<span class="badge badge-secret">GM only</span>{% endif %}
+      {% for tag in tags %}<span class="badge badge-tag">{{ tag }}</span>{% endfor %}
+    </p>
+    {% if aliases %}<p class="aliases">Also known as: {{ aliases | join(', ') }}</p>{% endif %}
+  </header>
+
+  {% if image or card %}
+  <section class="quick-card" aria-label="Quick card">
+    {% if image %}<div class="portrait">{{ image }}</div>{% endif %}
+    {% if card %}
+    <dl class="card-fields">
+      {% for row in card %}
+        <div class="field field-{{ row.key }}">
+          <dt>{{ row.label }}</dt>
+          <dd>{{ row.html }}
+            {% if row.note %}<span class="trend">{{ row.note }}</span>{% endif %}
+            {% if row.party_html %}<span class="party-believes" title="What the party believes">Party believes: {{ row.party_html }}</span>{% endif %}
+          </dd>
+        </div>
+      {% endfor %}
+    </dl>
+    {% endif %}
+  </section>
+  {% endif %}
+
+  <div class="entry-columns">
+    <div class="entry-main prose">
+      {{ body }}
+      {% if details %}
+      <section class="details">
+        <h2>Details</h2>
+        <dl class="detail-fields">
+          {% for row in details %}
+            <div class="field field-{{ row.key }}">
+              <dt>{{ row.label }}</dt>
+              <dd>{{ row.html }}
+                {% if row.party_html %}<span class="party-believes">Party believes: {{ row.party_html }}</span>{% endif %}
+              </dd>
+            </div>
+          {% endfor %}
+        </dl>
+      </section>
+      {% endif %}
+    </div>
+    {% if panels %}
+    <aside class="entry-side">
+      {% for panel in panels %}
+        <section class="panel">
+          <h2>{{ panel.title }}</h2>
+          <ul>
+            {% for href, label, detail in panel.items %}
+              <li><a href="{{ href }}">{{ label }}</a>{% if detail %} <span class="muted">{{ detail }}</span>{% endif %}</li>
+            {% endfor %}
+          </ul>
+        </section>
+      {% endfor %}
+    </aside>
+    {% endif %}
+  </div>
+</article>
+{% endblock %}

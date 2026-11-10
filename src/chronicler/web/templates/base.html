@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en" data-theme="dark" data-font="default">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ campaign_name }}{% endblock %} · Chronicler</title>
+  <script>
+    (function () {
+      try {
+        var d = document.documentElement;
+        d.dataset.theme = localStorage.getItem("chronicler-theme") || "dark";
+        d.dataset.font = localStorage.getItem("chronicler-font") || "default";
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="/static/css/chronicler.css">
+  <script src="/static/js/htmx.min.js" defer></script>
+  <script src="/static/js/prefs.js" defer></script>
+</head>
+<body class="{{ 'mode-gm' if gm else 'mode-player' }}">
+  <header class="topbar">
+    <a class="brand" href="/">{{ campaign_name }}</a>
+    <form class="search-form" action="/search" method="get" role="search">
+      <input type="search" name="q" value="{{ query }}" placeholder="Search names, places, anything…"
+             aria-label="Search" autocomplete="off"
+             hx-get="/search" hx-trigger="input changed delay:300ms, search"
+             hx-target="#live-results" hx-swap="innerHTML">
+      <div id="live-results" class="live-results" aria-live="polite"></div>
+    </form>
+    {% if today %}<span class="today" title="Current in-world date">{{ today }}</span>{% endif %}
+    <nav class="toggles" aria-label="Display options">
+      <span class="view-toggle" role="group" aria-label="View">
+        <a href="/view/gm?next={{ request.url.path }}" class="{{ 'on' if gm }}">GM</a>
+        <a href="/view/player?next={{ request.url.path }}" class="{{ 'on' if not gm }}">Player</a>
+      </span>
+      <button type="button" class="pref" data-pref="theme" title="Toggle dark / light">☾ / ☀</button>
+      <button type="button" class="pref" data-pref="font" title="Cycle font: default, OpenDyslexic, Atkinson Hyperlegible">Aa</button>
+    </nav>
+  </header>
+  {% if not gm %}<div class="player-banner">Player view: secrets are hidden.</div>{% endif %}
+  <div class="layout">
+    <aside class="sidebar" aria-label="Browse">
+      <a class="side-home" href="/">Home</a>
+      {% for group in sidebar %}
+        <details class="side-group" {% if group.tree %}open{% endif %}>
+          <summary><a href="/browse/{{ group.type }}">{{ group.label }}</a> <span class="count">{{ group.count }}</span></summary>
+          {% if group.tree %}
+            <ul class="tree">
+              {% for doc, depth in group.tree %}
+                <li style="--depth: {{ depth }}"><a href="/entry/{{ doc.id }}">{{ doc.name }}</a></li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </details>
+      {% endfor %}
+      {% if gm %}
+        <div class="side-tools">
+          <a href="/mismatches">Party beliefs vs truth</a>
+          <a href="/issues">Issues</a>
+        </div>
+      {% endif %}
+    </aside>
+    <main class="content" id="main">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</body>
+</html>

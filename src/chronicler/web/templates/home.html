@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<h1 class="page-title">{{ campaign_name }}</h1>
+
+<div class="dashboard">
+  <section class="card card-wide">
+    <h2>Last session{% if last_session %}: <a href="/entry/{{ last_session.id }}">{{ last_session.name }}</a>{% endif %}</h2>
+    {% if summary %}<div class="prose">{{ summary }}</div>
+    {% else %}<p class="empty">No sessions recorded yet.</p>{% endif %}
+  </section>
+
+  {% if gm %}
+  <section class="card">
+    <h2>Spotlight</h2>
+    {% if spotlight %}
+      <p class="hint">Sessions since each player's last big moment, most overdue first.</p>
+      <ul class="rows">
+        {% for row in spotlight %}
+          <li class="{{ 'focus' if loop.first }}">
+            <a href="/entry/{{ row.entry_id }}">{{ row.name }}</a>
+            {% if row.player %}<span class="muted">({{ row.player }})</span>{% endif %}
+            <span class="pill">{% if row.sessions_since is none %}never{% else %}{{ row.sessions_since }} session(s){% endif %}</span>
+            {% if loop.first and row.total_sessions %}<span class="pill pill-accent">Focus this session</span>{% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}<p class="empty">No player characters yet.</p>{% endif %}
+  </section>
+
+  <section class="card">
+    <h2>Coming up this week</h2>
+    {% if not has_today %}
+      <p class="empty">No current in-world date yet. Add a session with an in-world end date, or set <code>current_date</code> in calendar.yaml.</p>
+    {% else %}
+      {% if overdue %}
+        <h3 class="warn">Date passed: resolve or defer</h3>
+        <ul class="rows">
+          {% for item in overdue %}
+            <li><span class="date">{{ item.date_text }}</span> <a href="/entry/{{ item.entry_id }}">{{ item.title }}</a> <span class="muted">{{ item.entry_name }}</span></li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+      {% if soon %}
+        <ul class="rows">
+          {% for item in soon %}
+            <li><span class="date">{{ item.date_text }}</span> <a href="/entry/{{ item.entry_id }}">{{ item.title }}</a>
+              <span class="muted">{{ item.entry_name }}{% if item.kind == 'deadline' %} · decision deadline{% endif %}</span></li>
+          {% endfor %}
+        </ul>
+      {% elif not overdue %}<p class="empty">Nothing scheduled in the next 7 days.</p>{% endif %}
+    {% endif %}
+  </section>
+
+  <section class="card">
+    <h2>Hanging threads</h2>
+    {% if threads %}
+      <ul class="rows">
+        {% for t in threads %}
+          <li><a href="/entry/{{ t.entry_id }}">{{ t.name }}</a> <span class="muted">{{ t.detail }}</span></li>
+        {% endfor %}
+      </ul>
+    {% else %}<p class="empty">No open threads.</p>{% endif %}
+  </section>
+
+  <section class="card">
+    <h2>Session prep</h2>
+    {% if prep_tasks %}
+      <ul class="rows">
+        {% for task in prep_tasks %}
+          <li><a href="/entry/{{ task.entry_id }}">{{ task.name }}</a>
+            {% if task.total %}<span class="pill">{{ task.done }}/{{ task.total }}</span>{% endif %}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    {% if prep_notes %}
+      <ul class="rows prep-notes">
+        {% for note in prep_notes %}
+          <li><a href="/entry/{{ note.entry_id }}#{{ note.anchor }}">{{ note.text or '(empty note)' }}</a> <span class="muted">{{ note.entry_name }}</span></li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    {% if not prep_tasks and not prep_notes %}<p class="empty">Nothing marked for prep. Add <code>{prep}…{/prep}</code> anywhere.</p>{% endif %}
+  </section>
+  {% endif %}
+</div>
+{% endblock %}

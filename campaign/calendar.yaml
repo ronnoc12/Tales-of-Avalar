@@ -1,0 +1,25 @@
+# In-world calendar. Month, weekday, and season names are placeholders until the calendar phase.
+months: [Month-1, Month-2, Month-3, Month-4, Month-5, Month-6, Month-7, Month-8, Month-9, Month-10, Month-11, Month-12]
+weekdays: [Day-1, Day-2, Day-3, Day-4, Day-5, Day-6, Day-7]
+days_per_month: 30
+seasons:
+  - { name: Spring, months: [1, 2, 3] }
+  - { name: Summer, months: [4, 5, 6] }
+  - { name: Autumn, months: [7, 8, 9] }
+  - { name: Winter, months: [10, 11, 12] }
+
+# Years are counted from the Sundering (0 AS). Earlier years use BS.
+era_suffix: AS
+before_suffix: BS
+epoch_weekday: 0   # which weekday (0 = first) 1 Month-1 0 AS falls on
+
+eras:
+  # Era names match the era entries in lore/. Earlier eras (Primordial Chaos, Shattered Veil)
+  # predate any reckoning, so they have no years here.
+  - { name: Classical Era, start: -3000, end: 0 }
+  - { name: Era of Darkness, start: 0, end: 600 }
+  - { name: Reformation Era, start: 600, end: 1100 }
+  - { name: Modern Era, start: 1100 }
+
+# Leave empty to use the last session's in-world end date.
+current_date:

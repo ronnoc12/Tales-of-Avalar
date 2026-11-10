@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Party beliefs vs truth{% endblock %}
+{% block content %}
+<h1 class="page-title">Party beliefs vs truth</h1>
+<p class="hint">Every field where the party believes something different from the truth: surprises waiting to land.</p>
+{% if rows %}
+<table class="table">
+  <thead><tr><th>Entry</th><th>Field</th><th>Truth</th><th>Party believes</th></tr></thead>
+  <tbody>
+    {% for m, truth, believed in rows %}
+      <tr><td><a href="/entry/{{ m.entry_id }}">{{ m.entry_name }}</a></td><td>{{ m.field }}</td><td>{{ truth }}</td><td>{{ believed }}</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}<p class="empty">No differences recorded. Add a <code>party_view</code> block to an entry.</p>{% endif %}
+{% endblock %}

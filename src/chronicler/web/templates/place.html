@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}{{ place.name }}{% endblock %}
+{% block content %}
+<article class="entry entry-place">
+  <header class="entry-head">
+    <p class="crumbs"><a href="/entry/{{ owner.id }}">{{ owner.name }}</a> › Places</p>
+    <h1 class="page-title">{{ title }}</h1>
+    {% if place.kind %}<p class="entry-badges"><span class="badge">{{ place.kind }}</span></p>{% endif %}
+  </header>
+  <div class="prose">{{ body }}</div>
+</article>
+{% endblock %}
