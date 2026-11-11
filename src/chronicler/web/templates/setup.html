@@ -1,0 +1,13 @@
+{% extends "_bare.html" %}
+{% block title %}Welcome{% endblock %}
+{% block content %}
+<form class="auth-form" hx-post="/setup" hx-target="#auth-error" novalidate>
+  <h2>Create the GM account</h2>
+  <p class="muted">First run: this account can see and edit everything. You can add player accounts afterwards.</p>
+  <label>Name <input name="username" autocomplete="username" required autofocus></label>
+  <label>Password (at least 8 characters) <input name="password" type="password" autocomplete="new-password" required></label>
+  <label>Password again <input name="confirm" type="password" autocomplete="new-password" required></label>
+  <div id="auth-error" role="alert"></div>
+  <button class="button">Create and log in</button>
+</form>
+{% endblock %}

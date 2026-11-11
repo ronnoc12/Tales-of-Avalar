@@ -1,0 +1,22 @@
+{#- A native <dialog>, swapped into #modal-root (editor.js opens it). "Cancel" closes it
+with no JavaScript: a <form method="dialog"> button. -#}
+{% macro dialog(title, wide=false) -%}
+<dialog class="modal{{ ' modal-wide' if wide }}" aria-labelledby="modal-title">
+  <h2 id="modal-title">{{ title }}</h2>
+  <div class="modal-body">{{ caller() }}</div>
+</dialog>
+{%- endmacro %}
+
+{% macro cancel(label='Cancel') -%}
+<form method="dialog" class="inline"><button class="button button-quiet" value="cancel">{{ label }}</button></form>
+{%- endmacro %}
+
+{% macro issue_list(issues) -%}
+{%- if issues %}
+<ul class="issue-list">
+  {%- for issue in issues %}
+  <li class="issue-{{ issue.level }}">{{ issue.message }}{% if issue.field %} <span class="muted">[{{ issue.field }}]</span>{% endif %}</li>
+  {%- endfor %}
+</ul>
+{%- endif %}
+{%- endmacro %}

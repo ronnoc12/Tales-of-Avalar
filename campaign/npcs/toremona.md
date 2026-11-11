@@ -10,13 +10,13 @@ party_role: neutral
 disposition: 0.50
 location: "[[Feywild]]"
 factions:
-  - { faction: "[[Feywild Archfey Council]]", rank: Archfey }
+  - {faction: "[[Feywild Archfey Council]]", rank: Archfey}
 relationships:
-  - { to: "[[Lady Morivelle]]", type: friendly with }
-  - { to: "[[Nyxylia]]", type: respects }
+  - {to: "[[Lady Morivelle]]", type: friendly with}
+  - {to: "[[Nyxylia]]", type: respects}
 goals:
-  - { text: Expand her collection of emotional and dream experiences }
-  - { text: Preserve them in fey-crafted reliquaries and learn from them to manipulate or protect her domain }
+  - {text: Expand her collection of emotional and dream experiences}
+  - {text: Preserve them in fey-crafted reliquaries and learn from them to manipulate or protect her domain}
 tags: [archfey, feywild]
 ---
 

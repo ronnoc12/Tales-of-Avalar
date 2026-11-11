@@ -46,11 +46,33 @@ class Campaign:
     def root(self) -> Path:
         return self.repository.root
 
+    @property
+    def fingerprint(self) -> tuple[tuple[str, int], ...]:
+        """Changes whenever the files this campaign was loaded from change."""
+        return self._fingerprint
+
     def reload(self) -> None:
         self._fingerprint = self.repository.fingerprint()
         self.config, self.config_issues = self.repository.load_config()
         self.calendar = Calendar(self.config.calendar)
-        self.documents = self.repository.load_documents()
+        self._build(self.repository.load_documents())
+
+    def derive(self, documents: list[Document]) -> Campaign:
+        """The same campaign with a different set of documents, built in memory only.
+
+        Used to validate and preview proposed edits before anything is written.
+        """
+        clone = object.__new__(Campaign)
+        clone.repository = self.repository
+        clone.config = self.config
+        clone.config_issues = self.config_issues
+        clone.calendar = self.calendar
+        clone._fingerprint = self._fingerprint
+        clone._build(documents)
+        return clone
+
+    def _build(self, documents: list[Document]) -> None:
+        self.documents = documents
         gm_index = CampaignIndex(self.documents)
         self.gm = View(True, self.documents, gm_index, Renderer(gm_index, self.calendar, gm=True))
         redacted = player_documents(self.documents, gm_index)

@@ -1,8 +1,9 @@
-"""Command line: ``chronicler validate | review | serve``."""
+"""Command line: ``chronicler validate | review | serve | user``."""
 
 from __future__ import annotations
 
 import argparse
+import getpass
 import sys
 from collections.abc import Sequence
 from pathlib import Path
@@ -111,6 +112,48 @@ def cmd_serve(args: argparse.Namespace) -> int:
     return 0
 
 
+def _ask_password() -> str | None:
+    first = getpass.getpass("Password (at least 8 characters): ")
+    if getpass.getpass("Password again: ") != first:
+        print("error: the two passwords do not match", file=sys.stderr)
+        return None
+    return first
+
+
+def cmd_user(args: argparse.Namespace) -> int:
+    """Accounts from the terminal: the way back in if the GM password is forgotten."""
+    from chronicler.auth import AuthError, AuthStore
+    from chronicler.db import Database
+    from chronicler.storage import DATA_DIR
+
+    root = Path(args.campaign)
+    if not root.is_dir():
+        print(f"error: campaign folder not found: {root}", file=sys.stderr)
+        return 2
+    store = AuthStore(Database(root / DATA_DIR))
+    if args.action == "list":
+        for user in store.users():
+            print(f"{user.username}  ({'GM' if user.gm else 'Player'})")
+        return 0
+    if not args.name:
+        print("error: give the account name", file=sys.stderr)
+        return 2
+    password = _ask_password()
+    if password is None:
+        return 1
+    try:
+        if args.action == "add":
+            store.create_user(args.name, password, args.role)
+            print(f"Added {args.name} ({args.role}).")
+        else:
+            store.set_password(args.name, password)
+            print(f"Password changed for {args.name}; they are logged out everywhere.")
+    except AuthError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="chronicler", description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
@@ -133,6 +176,13 @@ def build_parser() -> argparse.ArgumentParser:
     p_serve.add_argument("--host", default="127.0.0.1")
     p_serve.add_argument("--port", type=int, default=8000)
     p_serve.set_defaults(func=cmd_serve)
+
+    p_user = sub.add_parser("user", help="add an account, reset a password, or list accounts")
+    p_user.add_argument("action", choices=("add", "reset-password", "list"))
+    p_user.add_argument("name", nargs="?", help="account name")
+    p_user.add_argument("--role", choices=("gm", "player"), default="player")
+    p_user.add_argument("--campaign", default=DEFAULT_CAMPAIGN, help="campaign folder")
+    p_user.set_defaults(func=cmd_user)
     return parser
 
 

@@ -9,8 +9,8 @@ alignment: Lawful Neutral
 party_role: neutral
 disposition: 0.50
 factions:
-  - { faction: "[[Order of the Eternal Wardens]]", rank: Grandmaster }
-  - { faction: "[[Faction of the Astral Seers]]", rank: Grandmaster }
+  - {faction: "[[Order of the Eternal Wardens]]", rank: Grandmaster}
+  - {faction: "[[Faction of the Astral Seers]]", rank: Grandmaster}
 tags: [eternal-wardens, grandmaster]
 ---
 

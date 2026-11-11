@@ -1,0 +1,11 @@
+{% from "_dialog.html" import dialog, cancel %}
+{% set titles = {"link": "Link to…", "reveal": "Revealed in which session?", "image": "Insert which image or clip?"} %}
+{% call dialog(titles[tool]) %}
+  <div class="picker" data-tool="{{ tool }}">
+    <label>Search <input type="search" name="q" autocomplete="off" autofocus
+      hx-get="/edit/pick/{{ tool }}/results" hx-trigger="input changed delay:150ms, load"
+      hx-target="next .pick-results"></label>
+    <ul class="pick-results plain-list" role="listbox"></ul>
+  </div>
+  <div class="modal-actions">{{ cancel() }}</div>
+{% endcall %}

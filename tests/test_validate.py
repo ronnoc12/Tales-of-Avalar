@@ -31,7 +31,11 @@ def test_fixture_campaign_is_clean(fixture_campaign: Campaign) -> None:
         ({"npcs/a.md": entry("a", "npc", party_view="{ mood: grim }")}, "unknown-field"),
         ({"npcs/a.md": entry("a", "npc", "{secret}never closed")}, "unclosed-span"),
         ({"npcs/a.md": entry("a", "npc", "x {/secret}")}, "unbalanced-span"),
-        ({"npcs/a.md": entry("a", "npc", "{secret}{prep}x{/prep}{/secret}")}, "nested-span"),
+        ({"npcs/a.md": entry("a", "npc", "{secret}a{prep}b{/secret}{/prep}")}, "overlapping-spans"),
+        ({"npcs/a.md": entry("a", "npc", "{secret about=[[Nobody]]}x{/secret}")}, "broken-link"),
+        ({"npcs/a.md": entry("a", "npc", "## H {secret about=[[Nobody]]}\nx")}, "broken-link"),
+        ({"npcs/a.md": entry("a", "npc", "## H {secret color=red}\nx")}, "unknown-attr"),
+        ({"npcs/a.md": entry("a", "npc", "{secret}one\ntwo")}, "unclosed-span"),
         ({"npcs/a.md": entry("a", "npc", "{spoiler}x")}, "unknown-tag"),
         ({"npcs/a.md": entry("a", "npc", "## Head {secret}x\n")}, "unclosed-span"),
         ({"npcs/a.md": entry("a", "npc", self_view='"{secret}x"')}, "unclosed-span"),
@@ -52,6 +56,28 @@ def test_fixture_campaign_is_clean(fixture_campaign: Campaign) -> None:
 )
 def test_error_types(make_campaign: MakeCampaign, files: dict[str, str], code: str) -> None:
     assert code in codes(validate(make_campaign(files)))
+
+
+def test_unquoted_comma_in_nested_item_is_flagged(make_campaign: MakeCampaign) -> None:
+    files = {"npcs/a.md": entry("a", "npc", goals="[{ text: Smooth, discreet, and neutral }]")}
+    issues = [i for i in validate(make_campaign(files)) if i.code == "unknown-field"]
+    assert {i.field for i in issues} == {"goals[0].discreet", "goals[0].and neutral"}
+    assert all("quotes" in i.message for i in issues)
+
+
+@pytest.mark.parametrize(
+    ("entry_type", "folder", "field", "value"),
+    [
+        ("npc", "npcs", "aliases", "[{ name: True Name, secret: true }]"),
+        ("npc", "npcs", "relationships", '[{ to: "[[a]]", secret: true }]'),
+        ("location", "locations", "market", "{ allowed: [relics] }"),
+    ],
+)
+def test_known_nested_keys_are_not_flagged(
+    make_campaign: MakeCampaign, entry_type: str, folder: str, field: str, value: str
+) -> None:
+    files = {f"{folder}/a.md": entry("a", entry_type, **{field: value})}
+    assert "unknown-field" not in codes(validate(make_campaign(files)))
 
 
 def test_duplicate_id(make_campaign: MakeCampaign) -> None:

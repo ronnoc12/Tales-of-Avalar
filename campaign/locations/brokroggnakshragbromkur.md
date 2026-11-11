@@ -16,7 +16,7 @@ magic:
 market:
   size: city
 relations:
-  - { to: "[[Klag]]", type: sister city, note: Uneasy alliance under growing strain }
+  - {to: "[[Klag]]", type: sister city, note: Uneasy alliance under growing strain}
 tags: [dwarves, underground, chaos]
 ---
 

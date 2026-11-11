@@ -8,11 +8,11 @@ public_face: An ancient nomadic order of marked mages, founders of the Reformati
 true_purpose: "{secret}A cult devoted to the lich Vhallion: it delivered the box that freed him into King Alaric, guards his phylactery, and breeds mutated monsters{/secret}"
 ranks: [Sorcerer-Lord, Operative, Elite]
 goals:
-  - { text: "Restore Vhallion and build his New Empire, starting with Valoria", secret: true }
-  - { text: "Use the Arcane Registry's lists to create ever more powerful mutated monsters", secret: true }
+  - {text: "Restore Vhallion and build his New Empire, starting with Valoria", secret: true}
+  - {text: "Use the Arcane Registry's lists to create ever more powerful mutated monsters", secret: true}
 relations:
-  - { to: "[[Arcane Concordance]]", type: splinter group, note: The Concordance broke away from the Order }
-  - { to: "[[Wardens of Ethereal Balance]]", type: splinter group, note: Founded by former members }
+  - {to: "[[Arcane Concordance]]", type: splinter group, note: The Concordance broke away from the Order}
+  - {to: "[[Wardens of Ethereal Balance]]", type: splinter group, note: Founded by former members}
 tags: [magic, history]
 ---
 

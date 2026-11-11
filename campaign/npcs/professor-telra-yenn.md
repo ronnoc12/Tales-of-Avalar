@@ -12,9 +12,9 @@ party_role: friendly
 disposition: 2.00
 location: "[[Valoria#Hollow Quarter]]"
 factions:
-  - { faction: "[[Emberlight Collective]]", rank: Leader }
+  - {faction: "[[Emberlight Collective]]", rank: Leader}
 goals:
-  - { text: "True educational reform: public arcane schooling, licensing for informal mages, safe and regulated invention" }
+  - {text: "True educational reform: public arcane schooling, licensing for informal mages, safe and regulated invention"}
 tags: [hollow-quarter, emberlight]
 ---
 

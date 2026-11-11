@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% import "_form.html" as form with context %}
+{% import "_editor_parts.html" as parts %}
+{% block title %}Editing {{ doc.name }}{% endblock %}
+{% block head %}
+  <link rel="stylesheet" href="/static/vendor/codemirror/codemirror.css">
+  <script src="/static/vendor/codemirror/codemirror.js" defer></script>
+  <script src="/static/vendor/codemirror/overlay.js" defer></script>
+  <script src="/static/vendor/codemirror/markdown.js" defer></script>
+  <script src="/static/js/editor.js" defer></script>
+{% endblock %}
+{% block content %}
+<article class="editor" id="editor" data-entry-id="{{ doc.id }}">
+  <header class="editor-head">
+    <p class="crumbs"><a href="/browse/{{ doc.type }}">{{ type_label }}</a> › <a href="/entry/{{ doc.id }}">{{ doc.name }}</a></p>
+    <h1 class="page-title">Editing {{ doc.name }}</h1>
+    <div class="editor-actions">
+      <button type="button" class="button" data-save
+        hx-post="/edit/{{ doc.id }}/save" hx-include="#editor-form" hx-target="#editor-feedback">Save</button>
+      <button type="button" class="button button-quiet"
+        hx-post="/edit/{{ doc.id }}/discard" hx-confirm="Discard your unsaved edits? The page reloads as it is on disk.">Discard draft</button>
+      <button type="button" class="button button-quiet" hx-post="/edit/{{ doc.id }}/rename-dialog" hx-include="#editor-form">Rename…</button>
+      {% if state.meta.get('status', 'canon') != 'retired' %}
+      <button type="button" class="button button-quiet" hx-post="/edit/{{ doc.id }}/retire-dialog" hx-include="#editor-form">Retire…</button>
+      {% endif %}
+      <button type="button" class="button button-quiet danger" hx-get="/edit/{{ doc.id }}/delete-dialog">Delete…</button>
+      <a class="button button-quiet" href="/entry/{{ doc.id }}">Done</a>
+    </div>
+    {% if state.stale %}
+    <p class="banner banner-warn">This draft was started before the page last changed on disk. Saving will keep your draft as a conflict copy and reload the page.</p>
+    {% endif %}
+    <div id="editor-feedback" aria-live="polite">
+      {{ parts.status_and_issues(
+        ('Draft from ' ~ state.saved_at|replace('T', ' ') ~ ' (not on the page yet)') if state.from_draft else 'No unsaved changes',
+        errors, warnings, problems) }}
+    </div>
+    {{ parts.flags(has_draft) }}
+  </header>
+
+  <div class="editor-columns">
+    <form class="editor-main" id="editor-form" novalidate
+      hx-post="/edit/{{ doc.id }}/draft" hx-target="#editor-feedback"
+      hx-trigger="input delay:2s, change delay:2s, cm-change delay:2s, every 10s">
+      <input type="hidden" id="base-hash" name="base_hash" value="{{ base_hash or '' }}">
+
+      <details class="editor-fields" open>
+        <summary><h2>Fields</h2></summary>
+        <div class="ef-fields">
+          {%- for spec in specs %}{{ form.field(spec) }}{% endfor %}
+        </div>
+      </details>
+
+      <section class="editor-body">
+        <h2>Text</h2>
+        <div class="toolbar" role="toolbar" aria-label="Markup">
+          <button type="button" data-tool="secret" title="Hide the selection from players">Secret</button>
+          <button type="button" data-tool="unmark" title="Remove the tag around the selection (text outside it keeps the tag)">Unmark</button>
+          <button type="button" hx-get="/edit/pick/reveal" title="Reveal the secret at the cursor (or the selection) and record the session">Reveal</button>
+          <button type="button" data-tool="prep" title="Prep note: always GM only, listed on the home page">Prep</button>
+          <button type="button" hx-get="/edit/pick/link" title="Link to an entry">Link</button>
+          <button type="button" hx-get="/edit/pick/image" title="Insert an image or audio clip">Image</button>
+          <button type="button" data-tool="heading-secret" title="Make the whole section at the cursor secret (or public)">Section secret</button>
+        </div>
+        <textarea id="body-editor" name="body" spellcheck="true">
+{{ state.body }}</textarea>
+        <p class="muted small">Secret text is shaded red, prep notes gold, revealed text underlined green. A tag that never closes hides the rest of its section. Ctrl+S saves.</p>
+      </section>
+      <datalist id="entry-names">{% for name in names %}<option value="[[{{ name }}]]">{% endfor %}</datalist>
+    </form>
+
+    <aside class="editor-preview" aria-label="Preview">
+      <div class="preview-tabs">
+        <input type="radio" name="preview-tab" id="tab-gm" checked><label for="tab-gm">GM view</label>
+        <input type="radio" name="preview-tab" id="tab-player"><label for="tab-player">Player view</label>
+      </div>
+      {{ parts.previews(preview_gm, preview_player) }}
+    </aside>
+  </div>
+</article>
+{% endblock %}

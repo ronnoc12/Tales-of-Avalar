@@ -11,11 +11,15 @@ from typing import Any
 from ruamel.yaml import YAML
 from ruamel.yaml.error import YAMLError
 
-# Private-use characters reserved for the renderer's placeholders.
+from chronicler.markup import ATTR_RE, MarkupIssue, balance, parse_args
+
+# Private-use characters reserved for the renderer's placeholders and markup markers.
 _RESERVED_RE = re.compile("[\ue000-\ue00f]")
-_HEADING_RE = re.compile(r"^(?P<hashes>#{1,6})\s+(?P<title>.*?)\s*#*\s*$")
-_ATTR_RE = re.compile(r"\s*\{(?P<attr>[a-z][a-z0-9_-]*)\}\s*$")
-_FENCE_RE = re.compile(r"^\s*(```|~~~)")
+HEADING_RE = re.compile(r"^(?P<hashes>#{1,6})\s+(?P<title>.*?)\s*#*\s*$")
+_ATTR_RE = re.compile(
+    r"\s*\{(?P<attr>[a-z][a-z0-9_-]*)(?P<args>(?:\s+" + ATTR_RE.pattern + r")*)\s*\}\s*$"
+)
+FENCE_RE = re.compile(r"^\s*(```|~~~)")
 _LINK_IN_TITLE_RE = re.compile(r"!?\[\[([^\]|#]*)(?:#[^\]|]*)?(?:\|([^\]]*))?\]\]")
 
 PLACES_TITLE = "places"
@@ -31,7 +35,13 @@ class DocumentIssue:
 
 @dataclass
 class Section:
-    """A heading and the lines under it (up to the next heading of any level)."""
+    """A heading and the lines under it (up to the next heading of any level).
+
+    ``lines`` are *balanced* (see :func:`chronicler.markup.balance`): a span that crosses
+    lines is closed and reopened on each one, so every line parses on its own. ``hidden``
+    marks code lines inside a hiding span; ``markup_issues`` holds problems balancing
+    found (unclosed spans), as (line index, issue).
+    """
 
     level: int
     title: str
@@ -43,6 +53,9 @@ class Section:
     secret: bool = False
     parent_slug: str | None = None
     is_place: bool = False
+    hidden: list[bool] = field(default_factory=list)
+    markup_issues: list[tuple[int, MarkupIssue]] = field(default_factory=list)
+    attr_args: dict[str, dict[str, str]] = field(default_factory=dict)
 
     @property
     def own_secret(self) -> bool:
@@ -120,16 +133,20 @@ def _split_sections(body: str, first_line: int) -> list[Section]:
     in_fence = False
     for offset, raw_line in enumerate(body.split("\n")):
         line_no = first_line + offset
-        fence = bool(_FENCE_RE.match(raw_line))
-        heading = None if (in_fence or fence) else _HEADING_RE.match(raw_line)
+        fence = bool(FENCE_RE.match(raw_line))
+        heading = None if (in_fence or fence) else HEADING_RE.match(raw_line)
         if heading:
             title = heading["title"]
             attrs: list[str] = []
+            attr_args: dict[str, dict[str, str]] = {}
             while True:
                 attr_match = _ATTR_RE.search(title)
                 if not attr_match:
                     break
                 attrs.insert(0, attr_match["attr"])
+                _free, args = parse_args(attr_match["args"])
+                if args:
+                    attr_args[attr_match["attr"]] = args
                 title = title[: attr_match.start()]
             title = title.strip()
             slug = slugify(title)
@@ -138,7 +155,16 @@ def _split_sections(body: str, first_line: int) -> list[Section]:
             if count > 1:
                 slug = f"{slug}-{count}"
             sections.append(
-                Section(len(heading["hashes"]), title, slug, tuple(attrs), line_no, [], [])
+                Section(
+                    len(heading["hashes"]),
+                    title,
+                    slug,
+                    tuple(attrs),
+                    line_no,
+                    [],
+                    [],
+                    attr_args=attr_args,
+                )
             )
             continue
         current = sections[-1]
@@ -146,6 +172,11 @@ def _split_sections(body: str, first_line: int) -> list[Section]:
         current.code.append(in_fence or fence)
         if fence:
             in_fence = not in_fence
+    for section in sections:
+        balanced = balance(section.lines, section.code)
+        section.lines = balanced.lines
+        section.hidden = balanced.hidden
+        section.markup_issues = balanced.issues
     _link_sections(sections)
     preamble_empty = not any(line.strip() for line in sections[0].lines)
     if preamble_empty and len(sections) > 1:

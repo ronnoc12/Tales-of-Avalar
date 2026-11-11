@@ -8,7 +8,7 @@ alignment: Lawful Good
 party_role: friendly
 disposition: 2.00
 factions:
-  - { faction: "[[Celestial Alliance]]", rank: Head }
+  - {faction: "[[Celestial Alliance]]", rank: Head}
 tags: [celestial-alliance]
 ---
 

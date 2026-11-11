@@ -10,7 +10,7 @@ party_role: friendly
 disposition: 1.00
 location: "[[Lei-aluran]]"
 relationships:
-  - { to: "[[Queen Amaphia]]", type: consort }
+  - {to: "[[Queen Amaphia]]", type: consort}
 tags: [lei-aluran, elves]
 ---
 

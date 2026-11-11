@@ -10,8 +10,8 @@ party_role: friendly
 disposition: 2.00
 location: "[[Lei-aluran]]"
 relationships:
-  - { to: "[[Queen Amaphia]]", type: childhood friend, note: Her closest confidant }
-  - { to: "[[Queen Amaphia]]", type: loves, note: Hidden out of respect for her union with Feyrith, secret: true }
+  - {to: "[[Queen Amaphia]]", type: childhood friend, note: Her closest confidant}
+  - {to: "[[Queen Amaphia]]", type: loves, note: Hidden out of respect for her union with Feyrith, secret: true}
 tags: [lei-aluran, elves]
 ---
 

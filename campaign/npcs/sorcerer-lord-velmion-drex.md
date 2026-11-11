@@ -16,10 +16,10 @@ portrayal:
   mannerisms: Always speaks calmly, with a sympathetic edge, until he doesn't
   voice: Calm and sympathetic
 factions:
-  - { faction: "[[Unsighted Order]]", rank: Sorcerer-Lord }
+  - {faction: "[[Unsighted Order]]", rank: Sorcerer-Lord}
 relationships:
-  - { to: "[[Vhallion]]", type: serves }
-  - { to: "[[Thorn of Glass]]", type: commands }
+  - {to: "[[Vhallion]]", type: serves}
+  - {to: "[[Thorn of Glass]]", type: commands}
 tags: [villain, unsighted-order, valoria]
 ---
 

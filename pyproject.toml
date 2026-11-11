@@ -12,6 +12,7 @@ dependencies = [
     "ruamel.yaml>=0.18",
     "markdown-it-py>=3.0",
     "rapidfuzz>=3.10",
+    "argon2-cffi>=23.1",
 ]
 
 [project.scripts]

@@ -12,10 +12,10 @@ terrain: Heart of the continent; forests to the north, rugged mountains to the s
 magic:
   stance: Growing integration of magic; the influence of magical organizations is a rising concern
 relations:
-  - { to: "[[Midcross]]", type: ally, note: Close ally and trade partner }
-  - { to: "[[Dominion of Sarnath]]", type: rival, note: Defeated in the War of the Distant Shore }
+  - {to: "[[Midcross]]", type: ally, note: Close ally and trade partner}
+  - {to: "[[Dominion of Sarnath]]", type: rival, note: Defeated in the War of the Distant Shore}
 factions:
-  - { faction: "[[Royal Council of Valoria]]", presence: The king's advisory council }
+  - {faction: "[[Royal Council of Valoria]]", presence: The king's advisory council}
 tags: [kingdom]
 ---
 

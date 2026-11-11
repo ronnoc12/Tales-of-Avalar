@@ -26,6 +26,7 @@ from chronicler.markup import (
     iter_links,
     parse_line,
     parse_link_body,
+    parse_text,
 )
 
 MIN_MENTION_LENGTH = 4
@@ -281,8 +282,7 @@ class CampaignIndex:
     def _build_references(self) -> None:
         for entry_id, document in self.docs.items():
             for path, text in walk_strings(document.meta, ""):
-                for line in text.split("\n"):
-                    nodes, _ = parse_line(line)
+                for nodes, _issues in parse_text(text):
                     self._collect(entry_id, nodes, field=path)
             for section in document.sections:
                 if section.level:

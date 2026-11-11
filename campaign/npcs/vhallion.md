@@ -2,7 +2,7 @@
 id: vhallion
 type: npc
 name: Vhallion
-aliases: [Vhalion, { name: Vhallion the Eternal Ember, secret: true }, { name: The Whispered Sovereign, secret: true }, { name: High Thaumarch, secret: true }]
+aliases: [Vhalion, {name: Vhallion the Eternal Ember, secret: true}, {name: The Whispered Sovereign, secret: true}, {name: High Thaumarch, secret: true}]
 race: Lich
 pronouns: he/him
 role: "Lich bound within King Alaric III{secret}; master of the Unsighted Order{/secret}"
@@ -22,14 +22,14 @@ portrayal:
     - "I used to believe in justice too. Then I studied history."
     - "Your king wears my crown beneath his skin. He simply hasn't noticed yet."
 factions:
-  - { faction: "[[Unsighted Order]]", rank: Master (object of devotion), secret: true }
+  - {faction: "[[Unsighted Order]]", rank: Master (object of devotion), secret: true}
 relationships:
-  - { to: "[[King Alaric III]]", type: possessing }
-  - { to: "[[Sorcerer-Lord Velmion Drex]]", type: served by, secret: true }
+  - {to: "[[King Alaric III]]", type: possessing}
+  - {to: "[[Sorcerer-Lord Velmion Drex]]", type: served by, secret: true}
 goals:
-  - { text: "Make Valoria the first city of his New Empire, ruled by an immortal mind" }
-  - { text: Take full control of King Alaric III }
-  - { text: Keep his phylactery safe }
+  - {text: "Make Valoria the first city of his New Empire, ruled by an immortal mind"}
+  - {text: Take full control of King Alaric III}
+  - {text: Keep his phylactery safe}
 agenda:
   ultimate_goal: A New Empire, beginning with Valoria, ruled by a single unchanging will
   location: "[[Valoria]]"
@@ -37,10 +37,10 @@ agenda:
   enemies: [Dragonkind]
   weaknesses: "Phylactery can be destroyed; can be rebound to the box by a guardian soul; party members can each sacrifice part of their soul to bind him"
   schemes:
-    - { name: Arcane Registry Mandate, status: active }
-    - { name: Soul Safety Ordinance, status: planned }
-    - { name: Unity Festival, status: planned }
-    - { name: Exile of Councilor Nyla Thorne, status: planned }
+    - {name: Arcane Registry Mandate, status: active}
+    - {name: Soul Safety Ordinance, status: planned}
+    - {name: Unity Festival, status: planned}
+    - {name: Exile of Councilor Nyla Thorne, status: planned}
 tags: [villain, lich, valoria]
 ---
 

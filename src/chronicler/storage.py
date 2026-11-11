@@ -1,11 +1,17 @@
-"""Storage: the single place that reads campaign files from disk.
+"""Storage: the single place that reads and writes campaign files on disk.
 
-Everything else works with :class:`Document` objects from here, so the storage backend
-could later be swapped (for example, for a database) without touching other modules.
+Everything else works with :class:`Document` objects and file text from here, so the
+storage backend could later be swapped (for example, for a database) without touching
+other modules. Writes are atomic: a crash never leaves half a file behind.
 """
 
 from __future__ import annotations
 
+import hashlib
+import os
+import subprocess
+import tempfile
+import time
 from dataclasses import dataclass, field
 from io import StringIO
 from pathlib import Path
@@ -20,6 +26,43 @@ from chronicler.document import Document, DocumentIssue, parse_document
 CAMPAIGN_FILE = "campaign.yaml"
 CALENDAR_FILE = "calendar.yaml"
 ASSET_FILES_DIR = Path("assets") / "files"
+TEMPLATES_DIR = "_templates"
+DRAFTS_DIR = "_drafts"
+DATA_DIR = "_data"
+_REPLACE_ATTEMPTS = 5
+
+
+class StorageError(OSError):
+    """A path outside the campaign, or a write the operating system refused."""
+
+
+def atomic_write(path: Path, data: bytes) -> None:
+    """Write ``data`` to ``path`` via a temp file in the same folder, then swap it in."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    handle = tempfile.NamedTemporaryFile(  # noqa: SIM115 - closed below before the swap
+        dir=path.parent, prefix=f".{path.name}.", suffix=".tmp", delete=False
+    )
+    try:
+        with handle:
+            handle.write(data)
+            handle.flush()
+            os.fsync(handle.fileno())
+        for attempt in range(_REPLACE_ATTEMPTS):
+            try:
+                os.replace(handle.name, path)
+                return
+            except PermissionError:
+                # Windows: a sync client or virus scanner may hold the file for a moment.
+                if attempt == _REPLACE_ATTEMPTS - 1:
+                    raise
+                time.sleep(0.05 * (attempt + 1))
+    except OSError as exc:
+        Path(handle.name).unlink(missing_ok=True)
+        raise StorageError(f"could not write {path.name}: {exc}") from exc
+
+
+def content_hash(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
 
 
 @dataclass(frozen=True)
@@ -89,6 +132,67 @@ class CampaignRepository:
             except (YAMLError, CalendarError, KeyError, TypeError, ValueError) as exc:
                 issues.append(ConfigIssue(CALENDAR_FILE, f"invalid calendar config: {exc}"))
         return CampaignConfig(name, calendar), issues
+
+    # -- entry files: read, write, delete ------------------------------------------------
+
+    def entry_path(self, rel: str) -> Path:
+        """The absolute path for an entry file, refusing anything outside the campaign."""
+        candidate = (self.root / rel).resolve()
+        if (
+            not candidate.is_relative_to(self.root)
+            or candidate.suffix != ".md"
+            or candidate == self.root
+            or self._skip(candidate)
+        ):
+            raise StorageError(f"not an entry file path: {rel}")
+        return candidate
+
+    def read_entry(self, rel: str) -> str:
+        """The file's exact text (line endings kept)."""
+        return self.entry_path(rel).read_bytes().decode("utf-8")
+
+    def entry_hash(self, rel: str) -> str | None:
+        """Content fingerprint used to detect edits made outside the app."""
+        path = self.entry_path(rel)
+        return content_hash(path.read_bytes()) if path.is_file() else None
+
+    def write_entry(self, rel: str, text: str) -> None:
+        atomic_write(self.entry_path(rel), text.encode("utf-8"))
+
+    def delete_entry(self, rel: str) -> None:
+        path = self.entry_path(rel)
+        try:
+            path.unlink()
+        except OSError as exc:
+            raise StorageError(f"could not delete {rel}: {exc}") from exc
+
+    def uncommitted(self, rel: str) -> bool | None:
+        """Does git hold changes to this file it could not restore? ``None`` if unknown."""
+        path = self.entry_path(rel)
+        try:
+            result = subprocess.run(
+                ["git", "status", "--porcelain", "--", path.name],
+                cwd=path.parent,
+                capture_output=True,
+                text=True,
+                timeout=10,
+                check=False,
+            )
+        except (OSError, subprocess.TimeoutExpired):
+            return None
+        if result.returncode != 0:
+            return None
+        return bool(result.stdout.strip())
+
+    def template_text(self, entry_type: str) -> str | None:
+        path = self.root / TEMPLATES_DIR / f"{entry_type}.md"
+        return path.read_bytes().decode("utf-8") if path.is_file() else None
+
+    def private_dir(self, name: str) -> Path:
+        """A git-ignored working folder inside the campaign (drafts, database)."""
+        if name not in (DRAFTS_DIR, DATA_DIR):
+            raise StorageError(f"unknown private folder: {name}")
+        return self.root / name
 
     def asset_file(self, relative_file: str) -> Path | None:
         """Resolve an asset's ``file`` value safely inside ``assets/files``."""

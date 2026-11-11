@@ -7,6 +7,8 @@ from collections.abc import Callable
 from pathlib import Path
 
 import pytest
+from fastapi import FastAPI
+from fastapi.testclient import TestClient
 
 from chronicler.campaign import Campaign
 
@@ -34,6 +36,22 @@ def make_campaign(tmp_path: Path) -> MakeCampaign:
         return Campaign(tmp_path)
 
     return build
+
+
+WRITE = {"X-Chronicler": "1"}  # the header every write needs (with a JSON body)
+PASSWORD = "correct horse battery"
+
+
+def logged_in(app: FastAPI, role: str = "gm", username: str | None = None) -> TestClient:
+    """A test client logged in as a GM or a Player (the account is created if needed)."""
+    name = username or f"test-{role}"
+    store = app.state.auth
+    if store.get(name) is None:
+        store.create_user(name, PASSWORD, role)
+    client = TestClient(app)
+    response = client.post("/login", json={"username": name, "password": PASSWORD}, headers=WRITE)
+    assert response.status_code == 204 and response.headers["HX-Redirect"] == "/", response.text
+    return client
 
 
 def entry(entry_id: str, entry_type: str, body: str = "", **fields: str) -> str:

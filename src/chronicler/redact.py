@@ -18,7 +18,16 @@ from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any
 
 from chronicler.document import Document, Section
-from chronicler.markup import Link, LinkRewriter, LinkTarget, Node, Text, redact_text
+from chronicler.markup import (
+    Link,
+    LinkRewriter,
+    LinkTarget,
+    Node,
+    Text,
+    emptied_by_redaction,
+    redact_line,
+    redact_text,
+)
 from chronicler.schema import (
     GM_ONLY_COMMON,
     GM_ONLY_FIELDS,
@@ -138,6 +147,16 @@ def redact_sections(sections: list[Section], rewrite: LinkRewriter | None = None
     for section in sections:
         if section.secret:
             continue
+        lines: list[str] = []
+        code: list[bool] = []
+        for i, line in enumerate(section.lines):
+            if section.hidden and section.hidden[i]:
+                continue  # a code block inside a secret or prep span
+            cleaned = redact_line(line, rewrite)  # code lines too: tags there still hide
+            if not section.code[i] and emptied_by_redaction(line, cleaned):
+                continue
+            lines.append(cleaned)
+            code.append(section.code[i])
         result.append(
             Section(
                 level=section.level,
@@ -145,8 +164,8 @@ def redact_sections(sections: list[Section], rewrite: LinkRewriter | None = None
                 slug=section.slug,
                 attrs=tuple(a for a in section.attrs if a != "secret"),
                 line=section.line,
-                lines=[redact_text(line, rewrite) for line in section.lines],
-                code=list(section.code),
+                lines=lines,
+                code=code,
                 secret=False,
                 parent_slug=section.parent_slug,
                 is_place=section.is_place,

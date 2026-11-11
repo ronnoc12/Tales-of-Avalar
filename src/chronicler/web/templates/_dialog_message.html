@@ -1,0 +1,8 @@
+{% from "_dialog.html" import dialog, cancel, issue_list %}
+{% call dialog(title) %}
+  {% if message %}<p>{{ message }}</p>{% endif %}
+  {{ issue_list(issues) }}
+  <div class="modal-actions">
+    {% if reload %}<a class="button" href="">Reload the page</a>{% else %}{{ cancel('OK') }}{% endif %}
+  </div>
+{% endcall %}

@@ -1,0 +1,21 @@
+{% from "_dialog.html" import dialog, cancel, issue_list %}
+{% call dialog("Rename " ~ doc.name) %}
+  <form class="stack" hx-post="/edit/{{ doc.id }}/{{ 'rename' if outcome and outcome.ok else 'rename-preview' }}">
+    <input type="hidden" name="base_hash" value="{{ base_hash or '' }}">
+    {% if outcome and outcome.ok %}
+      <input type="hidden" name="name" value="{{ name }}">
+      <input type="hidden" name="mode" value="{{ mode }}">
+      <p>Renaming to <strong>{{ name }}</strong> changes these files:</p>
+      <ul>{% for f in outcome.files %}<li><code>{{ f.rel_path }}</code></li>{% endfor %}</ul>
+      {{ issue_list(outcome.warnings) }}
+      <div class="modal-actions">{{ cancel() }}<button class="button">Rename</button></div>
+    {% else %}
+      <label>New name <input name="name" value="{{ name or doc.name }}" required autofocus></label>
+      <label class="check"><input type="radio" name="mode" value="alias" {{ 'checked' if mode != 'hard' }}> Keep the old name as an alias (links keep working)</label>
+      <label class="check"><input type="radio" name="mode" value="hard" {{ 'checked' if mode == 'hard' }}> Hard rename: rewrite every link to the new name</label>
+      {% if error %}<p class="form-error">{{ error }}</p>{% endif %}
+      {% if outcome %}{{ issue_list(outcome.errors) }}{% endif %}
+      <div class="modal-actions">{{ cancel() }}<button class="button">Continue</button></div>
+    {% endif %}
+  </form>
+{% endcall %}

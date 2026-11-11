@@ -1,0 +1,8 @@
+{% from "_dialog.html" import dialog, cancel %}
+{% call dialog("Retire this entry?") %}
+  <p>The page stays (marked retired) and links keep working, but players no longer see it, and links to it are marked retired.</p>
+  <form hx-post="/edit/{{ entry_id }}/retire">
+    <input type="hidden" name="base_hash" value="{{ base_hash or '' }}">
+    <div class="modal-actions">{{ cancel() }}<button class="button">Retire</button></div>
+  </form>
+{% endcall %}

@@ -5,7 +5,7 @@ name: Dominion of Sarnath
 aliases: [Sarnath]
 kind: nation
 relations:
-  - { to: "[[Valoria]]", type: rival, note: Defeated in the War of the Distant Shore }
+  - {to: "[[Valoria]]", type: rival, note: Defeated in the War of the Distant Shore}
 tags: [empire]
 ---
 

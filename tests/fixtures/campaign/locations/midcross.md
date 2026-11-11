@@ -15,14 +15,14 @@ magic:
   untrained: "Ignored for a bribe {secret}CANARY-MAGIC-BRIBE{/secret}"
 market:
   size: city
-  price_mods: { lumber: 0.70 }
+  price_mods: {lumber: 0.70}
 relations:
-  - { to: "[[Valoria]]", type: ally, note: Close trade partner }
-  - { to: "[[Valoria]]", type: rival, note: CANARY-SECRET-RELATION, secret: true }
+  - {to: "[[Valoria]]", type: ally, note: Close trade partner}
+  - {to: "[[Valoria]]", type: rival, note: CANARY-SECRET-RELATION, secret: true}
 factions:
-  - { faction: "[[USE]]", presence: Branch outpost }
+  - {faction: "[[USE]]", presence: Branch outpost}
 plots:
-  - { plot: "[[Ravenwood Silence]]", role: Where the bounty is posted }
+  - {plot: "[[Ravenwood Silence]]", role: Where the bounty is posted}
 ---
 
 ## Overview

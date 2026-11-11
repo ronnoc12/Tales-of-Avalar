@@ -9,11 +9,11 @@ headquarters: "[[Sanctum]]"
 public_face: A devout order upholding divine order and purity by rejecting magic
 ranks: [Grand Inquisitor, High Judge, High Inquisitor, Inquisitor, Informant]
 presence:
-  - { location: "[[Sanctum]]", role: Stronghold and seat of the Grand Inquisitor }
+  - {location: "[[Sanctum]]", role: Stronghold and seat of the Grand Inquisitor}
 relations:
-  - { to: "[[Arcane Concordance]]", type: enemy }
+  - {to: "[[Arcane Concordance]]", type: enemy}
 goals:
-  - { text: A world cleansed of magic, where mundane existence is revered as the purest form }
+  - {text: "A world cleansed of magic, where mundane existence is revered as the purest form"}
 tags: [anti-magic, zealots, villain]
 ---
 

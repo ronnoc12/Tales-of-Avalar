@@ -9,12 +9,13 @@ import pytest
 from fastapi.testclient import TestClient
 
 from chronicler.web.app import VIEW_COOKIE, create_app
-from tests.conftest import CANARY, FIXTURE, MakeCampaign, entry
+from tests.conftest import CANARY, FIXTURE, MakeCampaign, entry, logged_in
 
 
 @pytest.fixture(scope="module")
-def app_client() -> TestClient:
-    return TestClient(create_app(FIXTURE))
+def app_client(tmp_path_factory: pytest.TempPathFactory) -> TestClient:
+    """A GM, who can switch between the GM and Player views."""
+    return logged_in(create_app(FIXTURE, data_dir=tmp_path_factory.mktemp("data")), "gm")
 
 
 def _client(app_client: TestClient, mode: str) -> TestClient:
@@ -159,6 +160,9 @@ def test_static_assets(app_client: TestClient) -> None:
         "/static/css/chronicler.css",
         "/static/js/htmx.min.js",
         "/static/js/prefs.js",
+        "/static/js/htmx-json-enc.js",
+        "/static/js/editor.js",
+        "/static/vendor/codemirror/codemirror.js",
         "/static/fonts/opendyslexic-latin-400-normal.woff2",
     ):
         assert app_client.get(path).status_code == 200, path
@@ -173,7 +177,7 @@ def test_issues_and_mismatches_pages(app_client: TestClient) -> None:
 
 def test_reloads_when_files_change(make_campaign: MakeCampaign) -> None:
     campaign = make_campaign({"npcs/a.md": entry("a", "npc", name="Alpha")})
-    client = TestClient(create_app(campaign.root))
+    client = logged_in(create_app(campaign.root))
     assert "Alpha" in client.get("/entry/a").text
     path = Path(campaign.root) / "npcs" / "b.md"
     path.write_text(entry("b", "npc", name="Beta"), encoding="utf-8")
@@ -182,11 +186,11 @@ def test_reloads_when_files_change(make_campaign: MakeCampaign) -> None:
 
 def test_missing_asset_file(make_campaign: MakeCampaign) -> None:
     campaign = make_campaign({"assets/x.md": entry("x", "asset", file="gone.png")})
-    client = TestClient(create_app(campaign.root))
+    client = logged_in(create_app(campaign.root))
     assert client.get("/asset/x").status_code == 404
 
 
 def test_empty_campaign_home(make_campaign: MakeCampaign) -> None:
     campaign = make_campaign({})
-    html = TestClient(create_app(campaign.root)).get("/").text
+    html = logged_in(create_app(campaign.root)).get("/").text
     assert "No sessions recorded yet." in html and "No current in-world date yet." in html

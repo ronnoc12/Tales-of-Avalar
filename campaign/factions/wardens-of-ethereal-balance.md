@@ -5,8 +5,8 @@ name: Wardens of Ethereal Balance
 kind: secret society
 public_face: Guardians of ancient knowledge and artifacts who seek harmony between magic and mundane life
 relations:
-  - { to: "[[Unsighted Order]]", type: splintered from, note: Founded by former members }
-  - { to: "[[Obsidian Order]]", type: enemy, secret: true }
+  - {to: "[[Unsighted Order]]", type: splintered from, note: Founded by former members}
+  - {to: "[[Obsidian Order]]", type: enemy, secret: true}
 tags: [magic, balance]
 ---
 

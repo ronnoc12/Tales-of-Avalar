@@ -1,0 +1,10 @@
+{% from "_dialog.html" import dialog, cancel %}
+{% call dialog("Leave the editor?") %}
+  <p>You have edits that are not on the page yet.</p>
+  <div class="modal-actions">
+    {{ cancel('Stay') }}
+    <button type="button" class="button danger" hx-post="/edit/{{ entry_id }}/discard?then={{ to|urlencode }}">Discard them</button>
+    <button type="button" class="button button-quiet" hx-post="/edit/{{ entry_id }}/keep?then={{ to|urlencode }}" hx-include="#editor-form">Keep in draft</button>
+    <button type="button" class="button" hx-post="/edit/{{ entry_id }}/save?then={{ to|urlencode }}" hx-include="#editor-form" hx-target="#editor-feedback">Save now</button>
+  </div>
+{% endcall %}

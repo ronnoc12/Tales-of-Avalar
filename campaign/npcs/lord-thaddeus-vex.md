@@ -9,7 +9,7 @@ party_role: neutral
 disposition: 1.00
 location: "[[Valoria]]"
 factions:
-  - { faction: "[[Royal Council of Valoria]]", rank: Minister of Arcane Advancement }
+  - {faction: "[[Royal Council of Valoria]]", rank: Minister of Arcane Advancement}
 tags: [valoria, council]
 ---
 

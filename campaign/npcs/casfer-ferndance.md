@@ -14,13 +14,13 @@ portrayal:
   voice: New England accent; good-natured and sharp-witted
 location: "[[Midcross]]"
 factions:
-  - { faction: "[[USE]]", rank: Branch Leader, branch: "[[Midcross#USE Midcross Outpost]]" }
+  - {faction: "[[USE]]", rank: Branch Leader, branch: "[[Midcross#USE Midcross Outpost]]"}
 relationships:
-  - { to: "[[Cassie Ferndance]]", type: twin, note: Runs USE headquarters in Valoria }
-  - { to: "[[Redaelia Feywrick]]", type: mentor of, note: Sees her almost as an adopted daughter; fiercely protective }
+  - {to: "[[Cassie Ferndance]]", type: twin, note: Runs USE headquarters in Valoria}
+  - {to: "[[Redaelia Feywrick]]", type: mentor of, note: Sees her almost as an adopted daughter; fiercely protective}
 goals:
-  - { text: Protect his people and advance the interests of USE }
-  - { text: Keep USE operations in Midcross smooth, discreet, and neutral }
+  - {text: Protect his people and advance the interests of USE}
+  - {text: "Keep USE operations in Midcross smooth, discreet, and neutral"}
 tags: [use, midcross]
 ---
 

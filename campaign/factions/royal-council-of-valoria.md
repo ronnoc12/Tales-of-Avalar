@@ -8,7 +8,7 @@ leader: "[[King Alaric III]]"
 headquarters: "[[Valoria]]"
 public_face: The king's council of nobles, scholars, and trusted advisors
 presence:
-  - { location: "[[Valoria]]", role: Advises the crown }
+  - {location: "[[Valoria]]", role: Advises the crown}
 tags: [government, valoria]
 ---
 

@@ -78,3 +78,20 @@ def test_reserved_placeholder_characters_are_stripped() -> None:
 def test_windows_newlines() -> None:
     doc = parse_document("---\r\nid: x\r\nname: X\r\n---\r\n## A\r\ntext\r\n", "x.md")
     assert doc.name == "X" and doc.sections[0].title == "A"
+
+
+def test_heading_secret_with_reveal_settings() -> None:
+    doc = parse_document(
+        "---\nid: a\n---\n## Ledger {secret reveal=g about=[[X]]} {inn}\nx\n", "a.md"
+    )
+    section = doc.sections[0]
+    assert section.title == "Ledger" and section.attrs == ("secret", "inn") and section.secret
+    assert section.attr_args == {"secret": {"reveal": "g", "about": "[[X]]"}}
+
+
+def test_sections_hold_balanced_lines_and_issues() -> None:
+    text = "---\nid: a\n---\n## A\n{secret}one\ntwo{/secret}\n## B\n{prep}open\n"
+    doc = parse_document(text, "a.md")
+    first, second = doc.sections
+    assert first.lines[1].endswith("two{/secret}") and not first.markup_issues
+    assert [issue.code for _i, issue in second.markup_issues] == ["unclosed-span"]

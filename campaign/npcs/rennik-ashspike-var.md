@@ -11,9 +11,9 @@ party_role: neutral
 disposition: -1.50
 location: "[[Valoria#Hollow Quarter]]"
 factions:
-  - { faction: "[[Emberlight Collective]]", rank: Enforcer }
+  - {faction: "[[Emberlight Collective]]", rank: Enforcer}
 goals:
-  - { text: "Prevent another generation of \"disposable soldiers\"" }
+  - {text: "Prevent another generation of \"disposable soldiers\""}
 tags: [hollow-quarter, emberlight]
 ---
 

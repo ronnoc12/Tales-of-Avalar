@@ -10,15 +10,16 @@ from pydantic import ValidationError
 
 from chronicler.calendar import CalendarError
 from chronicler.campaign import Campaign
-from chronicler.document import Document, slugify
+from chronicler.document import Document, Section, slugify
 from chronicler.index import CampaignIndex, walk_strings
-from chronicler.markup import parse_line
+from chronicler.markup import Node, check_attrs, iter_spans, parse_line, parse_text
 from chronicler.schema import (
     DATE_FIELDS,
     ENTRY_MODELS,
     FUZZY_DATE_FIELDS,
     TYPE_FOLDERS,
     known_fields,
+    nested_unknown_fields,
 )
 
 Level = Literal["error", "warning"]
@@ -34,6 +35,7 @@ class Issue:
     line: int | None = None
     entry_id: str | None = None
     field: str | None = None
+    column: int | None = None  # 0-based, for markup issues in the body
 
     def format(self) -> str:
         where = self.file + (f":{self.line}" if self.line else "")
@@ -77,6 +79,7 @@ class Validator:
         file: str | None = None,
         line: int | None = None,
         field: str | None = None,
+        column: int | None = None,
     ) -> None:
         self.issues.append(
             Issue(
@@ -87,6 +90,7 @@ class Validator:
                 line,
                 document.id if document else None,
                 field,
+                column,
             )
         )
 
@@ -132,10 +136,21 @@ class Validator:
                 document,
             )
         try:
-            model.model_validate(meta)
+            validated = model.model_validate(meta)
         except ValidationError as exc:
             for error in exc.errors():
                 self.add("error", "schema", error["msg"], document, field=_loc(error["loc"]))
+        else:
+            for path in nested_unknown_fields(validated):
+                parent, _, key = path.rpartition(".")
+                self.add(
+                    "warning",
+                    "unknown-field",
+                    f"unknown field {key!r} in {parent} (an unquoted comma in YAML splits "
+                    'text into extra keys: put the value in "quotes")',
+                    document,
+                    field=path,
+                )
         fields = known_fields(entry_type)
         for key in meta:
             if key not in fields:
@@ -177,24 +192,72 @@ class Validator:
 
     def _markup(self, document: Document) -> None:
         for path, value in walk_strings(document.meta, ""):
-            for line in value.split("\n"):
-                for issue in parse_line(line)[1]:
+            for nodes, issues in parse_text(value):
+                for issue in issues:
                     self.add(issue.level, issue.code, issue.message, document, field=path)
+                self._about_links(document, nodes, field=path)
         for section in document.sections:
             if section.level:
-                for issue in parse_line(section.title)[1]:
+                nodes, issues = parse_line(section.title)
+                for issue in issues:
                     self.add(issue.level, issue.code, issue.message, document, line=section.line)
-            for i, line in enumerate(section.lines):
+                self._heading_attrs(document, section)
+            for i, issue in section.markup_issues:
+                line = section.content_line(i)
+                self.add(
+                    issue.level, issue.code, issue.message, document, line=line, column=issue.column
+                )
+            for i, line_text in enumerate(section.lines):
                 if section.code[i]:
                     continue
-                for issue in parse_line(line)[1]:
+                nodes, issues = parse_line(line_text)
+                for issue in issues:
                     self.add(
                         issue.level,
                         issue.code,
                         issue.message,
                         document,
                         line=section.content_line(i),
+                        column=issue.column,
                     )
+                self._about_links(document, nodes, line=section.content_line(i))
+
+    def _about_links(
+        self,
+        document: Document,
+        nodes: list[Node],
+        *,
+        field: str | None = None,
+        line: int | None = None,
+    ) -> None:
+        """``about=[[...]]`` on a span must point at a real entry."""
+        for span in iter_spans(nodes):
+            about = span.attrs.get("about")
+            if span.continued or not about or not about.startswith("[["):
+                continue
+            if not self.index.resolve(about, source_id=document.id).ok:
+                self.add(
+                    "error",
+                    "broken-link",
+                    f"about={about} matches nothing",
+                    document,
+                    line=line,
+                    field=field,
+                )
+
+    def _heading_attrs(self, document: Document, section: Section) -> None:
+        for attr, args in section.attr_args.items():
+            for issue in check_attrs(attr, args, 0):
+                self.add(issue.level, issue.code, issue.message, document, line=section.line)
+            about = args.get("about")
+            if attr == "secret" and about and not self.index.resolve(about).ok:
+                self.add(
+                    "error",
+                    "broken-link",
+                    f"about={about} matches nothing",
+                    document,
+                    line=section.line,
+                )
 
     def _dates(self, document: Document, entry_type: str) -> None:
         calendar = self.campaign.calendar

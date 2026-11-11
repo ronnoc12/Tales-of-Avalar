@@ -1,11 +1,17 @@
 {% extends "base.html" %}
 {% block title %}{{ doc.name }}{% endblock %}
 {% block content %}
-<article class="entry entry-{{ doc.type }}">
+<article class="entry entry-{{ doc.type }}"{% if can_edit %}{% endif %}>
   <header class="entry-head">
     <p class="crumbs"><a href="/browse/{{ doc.type }}">{{ type_label }}</a>
       {% if parent %} › <a href="/entry/{{ parent[0] }}">{{ parent[1] }}</a>{% endif %}</p>
     <h1 class="page-title">{{ title }}</h1>
+    {% if can_edit %}
+    <p class="entry-tools">
+      <a class="button button-small" href="/edit/{{ doc.id }}">Edit</a>
+      {% if has_draft %}<a class="badge badge-draft" href="/edit/{{ doc.id }}" title="Unsaved draft: open it in the editor">Draft</a>{% endif %}
+    </p>
+    {% endif %}
     <p class="entry-badges">
       {% if gm and status != 'canon' %}<span class="badge badge-status badge-{{ status }}">{{ status }}</span>{% endif %}
       {% if secret_entry %}<span class="badge badge-secret">GM only</span>{% endif %}
@@ -22,7 +28,7 @@
       {% for row in card %}
         <div class="field field-{{ row.key }}">
           <dt>{{ row.label }}</dt>
-          <dd>{{ row.html }}
+          <dd>{{ row.html }} {% if row.quick %}<button type="button" class="quick-edit" hx-get="/edit/{{ doc.id }}/field/{{ row.key }}" hx-target="closest dd" hx-swap="innerHTML" title="Edit {{ row.label }}" aria-label="Edit {{ row.label }}">✎</button>{% endif %}
             {% if row.note %}<span class="trend">{{ row.note }}</span>{% endif %}
             {% if row.party_html %}<span class="party-believes" title="What the party believes">Party believes: {{ row.party_html }}</span>{% endif %}
           </dd>
@@ -43,7 +49,7 @@
           {% for row in details %}
             <div class="field field-{{ row.key }}">
               <dt>{{ row.label }}</dt>
-              <dd>{{ row.html }}
+              <dd>{{ row.html }} {% if row.quick %}<button type="button" class="quick-edit" hx-get="/edit/{{ doc.id }}/field/{{ row.key }}" hx-target="closest dd" hx-swap="innerHTML" title="Edit {{ row.label }}" aria-label="Edit {{ row.label }}">✎</button>{% endif %}
                 {% if row.party_html %}<span class="party-believes">Party believes: {{ row.party_html }}</span>{% endif %}
               </dd>
             </div>

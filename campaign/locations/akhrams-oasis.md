@@ -17,7 +17,7 @@ magic:
 market:
   size: city
 factions:
-  - { faction: "[[Faythe's Guardians]]", presence: City sentinels, loyal only to Thena }
+  - {faction: "[[Faythe's Guardians]]", presence: "City sentinels, loyal only to Thena"}
 tags: [desert, neutral-ground, smuggling]
 ---
 

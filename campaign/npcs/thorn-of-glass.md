@@ -16,9 +16,9 @@ portrayal:
   mannerisms: Wears ever-changing disguises depending on who she's speaking to; brilliant at blending in
   voice: Smooth-voiced and elegant
 factions:
-  - { faction: "[[Unsighted Order]]", rank: Operative }
+  - {faction: "[[Unsighted Order]]", rank: Operative}
 relationships:
-  - { to: "[[Sorcerer-Lord Velmion Drex]]", type: serves }
+  - {to: "[[Sorcerer-Lord Velmion Drex]]", type: serves}
 tags: [villain, unsighted-order, hollow-quarter]
 ---
 

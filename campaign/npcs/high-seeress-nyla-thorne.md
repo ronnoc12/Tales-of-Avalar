@@ -9,7 +9,7 @@ party_role: friendly
 disposition: 1.50
 location: "[[Valoria]]"
 factions:
-  - { faction: "[[Royal Council of Valoria]]", rank: Advisor of Spiritual Affairs }
+  - {faction: "[[Royal Council of Valoria]]", rank: Advisor of Spiritual Affairs}
 tags: [valoria, council]
 ---
 

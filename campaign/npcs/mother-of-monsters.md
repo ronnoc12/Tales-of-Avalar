@@ -2,7 +2,7 @@
 id: mother-of-monsters
 type: npc
 name: Lyzandral
-aliases: [Mother of Monsters, { name: The Primordial Weaver, secret: true }]
+aliases: [Mother of Monsters, {name: The Primordial Weaver, secret: true}]
 party_view:
   name: The Mother of Monsters
 pronouns: she/her
@@ -15,9 +15,9 @@ location: "[[Feywild#Ossuary Wilds]]"
 portrayal:
   mannerisms: Calm, measured, often cryptic; speaks in riddles or philosophical maxims; nurturing and terrifying by turns (inspired by Flemeth, Dragon Age)
 goals:
-  - { text: "Expand the Ossuary Wilds and her influence over the Feywild, destabilizing other archfey without revealing herself", secret: true }
-  - { text: Create and perfect horrific creatures, testing survival, intelligence, and adaptation }
-  - { text: "Acquire aether crystals to manipulate time and space in her domain" }
+  - {text: "Expand the Ossuary Wilds and her influence over the Feywild, destabilizing other archfey without revealing herself", secret: true}
+  - {text: "Create and perfect horrific creatures, testing survival, intelligence, and adaptation"}
+  - {text: "Acquire aether crystals to manipulate time and space in her domain"}
 agenda:
   ultimate_goal: Control of the Feywild's fate through patient, hidden manipulation
   resources: [Monsters of the Ossuary Wilds, "A black dragon, captured and remade as her agent"]

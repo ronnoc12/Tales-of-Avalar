@@ -66,7 +66,7 @@ ALIGNMENTS = (
 ID_PATTERN = r"^[a-z0-9][a-z0-9-]*$"
 
 
-def _check_alignment(value: Any) -> Any:
+def check_alignment(value: Any) -> Any:
     if value is None:
         return value
     for alignment in ALIGNMENTS:
@@ -75,7 +75,7 @@ def _check_alignment(value: Any) -> Any:
     raise ValueError(f"unknown alignment {value!r}; use one of: {', '.join(ALIGNMENTS)}")
 
 
-Alignment = Annotated[str, BeforeValidator(_check_alignment)]
+Alignment = Annotated[str, BeforeValidator(check_alignment)]
 Text = str | int | float
 
 
@@ -90,6 +90,7 @@ class Alias(Model):
     name: str
     used_by: str | None = None
     search_only: bool = False
+    secret: bool = False
 
 
 class Goal(Model):
@@ -242,6 +243,7 @@ class Market(Model):
     size: Literal["hamlet", "village", "town", "city", "metropolis"] | None = None
     price_mods: dict[str, Decimal] = Field(default_factory=dict)
     banned: list[str] = Field(default_factory=list)
+    allowed: list[str] = Field(default_factory=list)
 
     @field_validator("price_mods", mode="before")
     @classmethod
@@ -757,3 +759,58 @@ def known_fields(entry_type: str) -> set[str]:
     for name, info in model.model_fields.items():
         names.add(info.alias or name)
     return names
+
+
+# Fields whose value is one [[link]] (any entry type, any nesting level); the editor offers
+# name autocomplete for them. LINK_LIST_FIELDS hold a list of links.
+LINK_FIELDS = frozenset(
+    {
+        "actor",
+        "alternate_of",
+        "branch",
+        "event",
+        "faction",
+        "headquarters",
+        "holder",
+        "leader",
+        "location",
+        "map",
+        "parent",
+        "plot",
+        "ruler",
+        "session",
+        "site",
+        "to",
+    }
+)
+LINK_LIST_FIELDS = frozenset(
+    {"allies", "appeared", "enemies", "locations", "related", "spotlight", "used_in"}
+)
+
+
+# ``secret: true`` hides any list item from players (see redact.py), so it is always known.
+GENERIC_ITEM_KEYS = frozenset({"secret"})
+
+
+def nested_unknown_fields(value: Any, path: str = "") -> list[str]:
+    """Paths of keys inside nested items that no schema field covers.
+
+    Top-level keys of an entry are checked separately (with :func:`known_fields`); this
+    finds the ones below, e.g. ``goals[1].discreet`` from an unquoted comma in YAML.
+    """
+    found: list[str] = []
+    if isinstance(value, BaseModel):
+        if path:
+            for key in value.model_extra or {}:
+                if key not in GENERIC_ITEM_KEYS:
+                    found.append(f"{path}.{key}")
+        for name, info in type(value).model_fields.items():
+            child = f"{path}.{info.alias or name}" if path else (info.alias or name)
+            found.extend(nested_unknown_fields(getattr(value, name), child))
+    elif isinstance(value, list):
+        for i, item in enumerate(value):
+            found.extend(nested_unknown_fields(item, f"{path}[{i}]"))
+    elif isinstance(value, dict):
+        for key, item in value.items():
+            found.extend(nested_unknown_fields(item, f"{path}.{key}"))
+    return found

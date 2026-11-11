@@ -173,3 +173,14 @@ def test_alignment_is_gm_only(fixture_campaign: Campaign) -> None:
 def test_tags_are_gm_only(fixture_campaign: Campaign) -> None:
     assert fixture_campaign.gm.index.docs["casfer-ferndance"].meta["tags"] == ["use"]
     assert "tags" not in fixture_campaign.player.index.docs["casfer-ferndance"].meta
+
+
+def test_multi_line_and_nested_spans_in_player_view(fixture_campaign: Campaign) -> None:
+    doc = next(d for d in fixture_campaign.player.documents if d.id == "casfer-ferndance")
+    notes = next(s for s in doc.sections if s.slug == "field-notes")
+    text = "\n".join(notes.lines)
+    assert "- Public bullet one.\n- Public bullet two." in text  # no empty bullets left behind
+    assert "Known now: the twins" in text and "past." in text
+    assert "```" not in text  # the code block inside the secret is gone too
+    assert all(s.slug != "ledger" for s in doc.sections)
+    assert len(notes.lines) == len(notes.code)

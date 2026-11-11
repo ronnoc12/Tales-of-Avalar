@@ -16,8 +16,10 @@
   <link rel="stylesheet" href="/static/css/chronicler.css">
   <script src="/static/js/htmx.min.js" defer></script>
   <script src="/static/js/prefs.js" defer></script>
+  <script src="/static/js/htmx-json-enc.js" defer></script>
+  {% block head %}{% endblock %}
 </head>
-<body class="{{ 'mode-gm' if gm else 'mode-player' }}">
+<body class="{{ 'mode-gm' if gm else 'mode-player' }}" hx-ext="json-enc" hx-headers='{"X-Chronicler": "1"}'>
   <header class="topbar">
     <a class="brand" href="/">{{ campaign_name }}</a>
     <form class="search-form" action="/search" method="get" role="search">
@@ -29,12 +31,23 @@
     </form>
     {% if today %}<span class="today" title="Current in-world date">{{ today }}</span>{% endif %}
     <nav class="toggles" aria-label="Display options">
+      {% if user.gm %}
+      <a class="button button-small" href="/new">+ New entry</a>
       <span class="view-toggle" role="group" aria-label="View">
         <a href="/view/gm?next={{ request.url.path }}" class="{{ 'on' if gm }}">GM</a>
         <a href="/view/player?next={{ request.url.path }}" class="{{ 'on' if not gm }}">Player</a>
       </span>
+      {% endif %}
       <button type="button" class="pref" data-pref="theme" title="Toggle dark / light">☾ / ☀</button>
       <button type="button" class="pref" data-pref="font" title="Cycle font: default, OpenDyslexic, Atkinson Hyperlegible">Aa</button>
+      <details class="user-menu">
+        <summary title="Signed in as {{ user.username }}">{{ user.username }}</summary>
+        <div class="user-menu-items">
+          <span class="muted">{{ 'GM' if user.gm else 'Player' }}</span>
+          {% if user.gm %}<a href="/users">Users</a>{% endif %}
+          <button type="button" class="link-button" hx-post="/logout">Log out</button>
+        </div>
+      </details>
     </nav>
   </header>
   {% if not gm %}<div class="player-banner">Player view: secrets are hidden.</div>{% endif %}
@@ -57,6 +70,7 @@
         <div class="side-tools">
           <a href="/mismatches">Party beliefs vs truth</a>
           <a href="/issues">Issues</a>
+          {% if user.gm %}<a href="/users">Users</a>{% endif %}
         </div>
       {% endif %}
     </aside>
@@ -64,5 +78,7 @@
       {% block content %}{% endblock %}
     </main>
   </div>
+  <div id="modal-root"></div>
+  {% block scripts %}{% endblock %}
 </body>
 </html>

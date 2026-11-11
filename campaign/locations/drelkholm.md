@@ -13,7 +13,7 @@ magic:
   untrained: Feared; uncontrolled mages are exiled or forced into reeducation under the Iron Order
 market:
   size: town
-  price_mods: { weapons: 0.90, armor: 0.90 }
+  price_mods: {weapons: 0.90, armor: 0.90}
   banned: [magic items]
 tags: [coastal, fortress, anti-magic]
 ---

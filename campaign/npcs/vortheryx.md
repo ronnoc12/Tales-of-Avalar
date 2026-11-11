@@ -10,7 +10,7 @@ role: Red wyrm philosopher-king
 life_state: dead
 location: "[[Ashvault Sanctum]]"
 relationships:
-  - { to: "[[Vhallion]]", type: slain by, secret: true }
+  - {to: "[[Vhallion]]", type: slain by, secret: true}
 tags: [dragons, history]
 ---
 

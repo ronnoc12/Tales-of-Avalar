@@ -1,0 +1,8 @@
+{% from "_dialog.html" import dialog, cancel %}
+{% call dialog("Save your edits first") %}
+  <p>{{ action }} works on the saved page, and you have edits that are not on the page yet. Save (or discard) them first so nothing is lost, then try again.</p>
+  <div class="modal-actions">
+    {{ cancel() }}
+    <button type="button" class="button" hx-post="/edit/{{ entry_id }}/save" hx-include="#editor-form" hx-target="#editor-feedback">Save my edits</button>
+  </div>
+{% endcall %}

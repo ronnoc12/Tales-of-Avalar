@@ -10,11 +10,11 @@ party_role: neutral
 disposition: -1.00
 self_view: All he ever wanted was equality and prosperity for his people.
 factions:
-  - { faction: "[[Wanderers of the Wandering Grove]]", rank: Goblin clan leader }
+  - {faction: "[[Wanderers of the Wandering Grove]]", rank: Goblin clan leader}
 relationships:
-  - { to: "[[Triq]]", type: former leader }
+  - {to: "[[Triq]]", type: former leader}
 goals:
-  - { text: Equality and prosperity for his people }
+  - {text: Equality and prosperity for his people}
 tags: [goblins, wandering-grove]
 ---
 

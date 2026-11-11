@@ -11,10 +11,10 @@ party_role: neutral
 disposition: 0.00
 location: "[[Midcross]]"
 factions:
-  - { faction: "[[Midcross Council]]", rank: Lord (advised by the council) }
+  - {faction: "[[Midcross Council]]", rank: Lord (advised by the council)}
 goals:
-  - { text: Economic growth and financial stability for Midcross }
-  - { text: Learn why Ravenwood's lumber and his representatives never returned }
+  - {text: Economic growth and financial stability for Midcross}
+  - {text: Learn why Ravenwood's lumber and his representatives never returned}
 portrait: "![[img:lord-burgenroot-image]]"
 tags: [midcross, ruler]
 ---

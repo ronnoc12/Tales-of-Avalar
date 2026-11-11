@@ -25,6 +25,7 @@ from chronicler.markup import (
     Span,
     Text,
     parse_line,
+    parse_text,
     plain_text,
     redact_nodes,
 )
@@ -117,12 +118,16 @@ class Renderer:
         return "".join(out)
 
     def _span_open(self, span: Span) -> str:
+        group = f" · reveal: {span.attrs['reveal']}" if span.attrs.get("reveal") else ""
         if span.kind == "secret":
-            return '<span class="secret" title="GM only">'
+            title = html.escape(f"GM only{group}", quote=True)
+            return f'<span class="secret" title="{title}">'
         if span.kind == "revealed":
             when = plain_text(parse_line(span.arg)[0]) if span.arg else ""
-            title = html.escape(f"Revealed in {when}" if when else "Revealed", quote=True)
+            title = html.escape((f"Revealed in {when}" if when else "Revealed") + group, quote=True)
             return f'<span class="revealed" title="{title}">'
+        if span.continued:  # the rest of a multi-line prep note: same anchor as its start
+            return '<mark class="prep">'
         self._prep_counter += 1
         return f'<mark class="prep" id="prep-{self._prep_counter}">'
 
@@ -135,6 +140,9 @@ class Renderer:
                 href = place_url(place.owner_id, place.slug)
             else:
                 href = entry_url(resolution.entry_id, resolution.section_slug)
+            status = self.index.docs[resolution.entry_id].meta.get("status", "canon")
+            if self.gm and status == "retired":
+                return f'<a class="link link-retired" href="{href}" title="Retired">{label}</a>'
             return f'<a class="link" href="{href}">{label}</a>'
         if not self.gm:
             return label
@@ -182,9 +190,8 @@ class Renderer:
     def inline(self, text: str, source_id: str) -> str:
         """Render a short text value (frontmatter) as inline HTML; newlines become <br>."""
         parts: list[str] = []
-        for line in str(text).split("\n"):
+        for nodes, _issues in parse_text(str(text)):
             fragments: list[str] = []
-            nodes, _ = parse_line(line)
             rendered = self.md.renderInline(self._nodes_to_md(nodes, source_id, fragments))
             parts.append(self._restore(rendered, fragments))
         return "<br>".join(parts)

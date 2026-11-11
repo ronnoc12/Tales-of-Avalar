@@ -11,13 +11,13 @@ public_face: A prestigious university for the study, control, and ethical integr
 true_purpose: "{secret}Faythe's instrument to infiltrate and manipulate society's power structures and build a world order where magic users rule, with a reckoning for non-magical 'oppressors'{/secret}"
 ranks: [Archmage, Grand Mage, Mentor, Ameliorate (certified mage), Student]
 relations:
-  - { to: "[[Unsighted Order]]", type: splintered from }
-  - { to: "[[Obsidian Order]]", type: rival, note: Opposes the Order's ambitions, secret: true }
-  - { to: "[[The Enlightened]]", type: enemy }
+  - {to: "[[Unsighted Order]]", type: splintered from}
+  - {to: "[[Obsidian Order]]", type: rival, note: Opposes the Order's ambitions, secret: true}
+  - {to: "[[The Enlightened]]", type: enemy}
 goals:
-  - { text: Educate and certify mages; integrate magic ethically into society }
-  - { text: "Subvert existing power structures and establish a world order where magic users, under Faythe, reign supreme", secret: true }
-  - { text: "Make non-magical people atone for the persecution of mages (forced servitude, exile, or worse)", secret: true }
+  - {text: Educate and certify mages; integrate magic ethically into society}
+  - {text: "Subvert existing power structures and establish a world order where magic users, under Faythe, reign supreme", secret: true}
+  - {text: "Make non-magical people atone for the persecution of mages (forced servitude, exile, or worse)", secret: true}
 agenda:
   ultimate_goal: A world order where magic users rule, under Faythe's guidance
   resources: ["Graduates and trusted agents placed as spies in courts, noble houses, religious institutions, and military commands", "[[Faythe's Guardians]]"]

@@ -9,7 +9,7 @@ party_role: neutral
 disposition: 0.50
 location: "[[Midcross]]"
 factions:
-  - { faction: "[[Midcross Council]]", rank: Head of Commerce }
+  - {faction: "[[Midcross Council]]", rank: Head of Commerce}
 portrayal:
   mannerisms: "Pragmatic and business-oriented; focused on economic stability and growth."
 tags: [midcross, council]

@@ -9,7 +9,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 from chronicler.index import CampaignIndex, alias_names, walk_strings
-from chronicler.markup import parse_line, plain_text
+from chronicler.markup import parse_text, plain_text
 
 SNIPPET_RADIUS = 60
 MAX_SNIPPETS = 5
@@ -48,7 +48,7 @@ class _Line:
 
 
 def _plain(text: str) -> str:
-    return " ".join(plain_text(parse_line(line)[0]) for line in text.split("\n"))
+    return " ".join(plain_text(nodes) for nodes, _issues in parse_text(text))
 
 
 class SearchIndex:

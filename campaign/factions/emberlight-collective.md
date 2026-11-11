@@ -8,13 +8,13 @@ leader: "[[Professor Telra Yenn]]"
 motto: "When the city forgets us, we light our own way."
 public_face: A grassroots movement of teachers, tinkerers, and guardians of the Hollow Quarter
 presence:
-  - { location: "[[Valoria#Hollow Quarter]]", role: Secret learning halls, invention spaces, and safehouses }
+  - {location: "[[Valoria#Hollow Quarter]]", role: "Secret learning halls, invention spaces, and safehouses"}
 relations:
-  - { to: "[[Obsidian Order]]", type: unknowingly manipulated by, note: Order agents pose as generous patrons, secret: true }
+  - {to: "[[Obsidian Order]]", type: unknowingly manipulated by, note: Order agents pose as generous patrons, secret: true}
 goals:
-  - { text: Equitable access to education }
-  - { text: Cultural preservation }
-  - { text: Ethical invention }
+  - {text: Equitable access to education}
+  - {text: Cultural preservation}
+  - {text: Ethical invention}
 tags: [hollow-quarter, grassroots]
 ---
 

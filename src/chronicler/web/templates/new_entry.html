@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}New entry{% endblock %}
+{% block content %}
+<article class="new-entry">
+  <h1 class="page-title">New entry</h1>
+  <form class="auth-form" hx-post="/new" hx-target="#new-entry-error" novalidate>
+    <label>Type
+      <select name="entry_type">
+        {% for key, label in type_labels.items() %}<option value="{{ key }}" {{ 'selected' if key == entry_type }}>{{ label }}</option>{% endfor %}
+      </select>
+    </label>
+    <label>Name <input name="name" required autofocus
+      hx-get="/new/id-hint" hx-include="closest form" hx-trigger="input changed delay:250ms" hx-target="#id-hint"></label>
+    <label class="check"><input type="checkbox" name="hidden_name" value="1"
+      hx-get="/new/id-hint" hx-include="closest form" hx-trigger="change" hx-target="#id-hint"> The party knows them by another name</label>
+    <label>Name the party knows (only if the box above is ticked) <input name="party_name"
+      hx-get="/new/id-hint" hx-include="closest form" hx-trigger="input changed delay:250ms" hx-target="#id-hint"></label>
+    <label>Id <input name="entry_id" pattern="[a-z0-9][a-z0-9-]*">
+      <span class="ef-hint" id="id-hint">The id is made from the name.</span>
+      <span class="ef-hint">Permanent and shown in page addresses: lowercase letters, digits, dashes. A hidden true name must not appear in it.</span>
+    </label>
+    <div id="new-entry-error"></div>
+    <button class="button">Create and edit</button>
+  </form>
+</article>
+{% endblock %}

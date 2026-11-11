@@ -9,7 +9,7 @@ party_role: neutral
 disposition: 0.50
 location: "[[Valoria]]"
 factions:
-  - { faction: "[[Royal Council of Valoria]]", rank: Director of Foreign Relations }
+  - {faction: "[[Royal Council of Valoria]]", rank: Director of Foreign Relations}
 tags: [valoria, council]
 ---
 

@@ -1,0 +1,52 @@
+{#- Pieces of the editor page, shared by edit.html and the autosave / save replies. -#}
+
+{% macro issue_item(row) -%}
+{%- set issue = row.issue -%}
+<li class="issue-{{ issue.level }}"{% if row.body_index is not none %} data-issue-line="{{ row.body_index }}"{% endif %}>
+  {{ issue.message }}
+  {%- if row.body_index is not none %} <span class="muted">(text line {{ row.body_index + 1 }})</span>
+  {%- elif issue.field %} <span class="muted">[{{ issue.field }}]</span>{% endif %}
+  {%- if row.body_index is not none %}
+    {%- set at = 'data-line="' ~ row.body_index ~ '" data-column="' ~ (issue.column or 0) ~ '"' %}
+    {%- if issue.code == 'unclosed-span' %}
+    <button type="button" class="link-button" data-fix="close-section" {{ at|safe }}>Close at end of section</button>
+    <button type="button" class="link-button" data-fix="close-paragraph" {{ at|safe }}>Close at end of paragraph</button>
+    <button type="button" class="link-button" data-fix="remove-tag" {{ at|safe }}>Remove the opening tag</button>
+    {%- elif issue.code == 'unbalanced-span' %}
+    <button type="button" class="link-button" data-fix="remove-tag" {{ at|safe }}>Remove it</button>
+    {%- endif %}
+    <button type="button" class="link-button" data-jump {{ at|safe }}>Jump to it</button>
+  {%- elif issue.field %}
+    <a class="link-button" href="#field-{{ issue.field.split('.')[0].split('[')[0] }}">Show field</a>
+  {%- endif %}
+</li>
+{%- endmacro %}
+
+{% macro status_and_issues(status, errors, warnings, problems) -%}
+<p class="editor-status" role="status">{{ status }}</p>
+{%- if errors or warnings or problems %}
+<section class="editor-issues">
+  <h2>{{ (errors|length + problems|length) ~ ' problem(s) block saving' if errors or problems else 'Warnings (saving still works)' }}</h2>
+  <ul class="issue-list">
+    {%- for problem in problems %}<li class="issue-error">{{ problem }}</li>{% endfor %}
+    {%- for row in errors %}{{ issue_item(row) }}{% endfor %}
+    {%- for row in warnings %}{{ issue_item(row) }}{% endfor %}
+  </ul>
+</section>
+{%- endif %}
+{%- endmacro %}
+
+{% macro previews(preview_gm, preview_player, oob=false) -%}
+<div id="preview-gm" class="preview-pane pane-gm prose"{% if oob %} hx-swap-oob="true"{% endif %}>{{ preview_gm or '' }}</div>
+<div id="preview-player" class="preview-pane pane-player prose"{% if oob %} hx-swap-oob="true"{% endif %}>
+  {%- if preview_player is none %}<p class="muted">Players cannot see this page (hidden, not canon, or a GM-only type).</p>
+  {%- else %}{{ preview_player }}{% endif -%}
+</div>
+{%- endmacro %}
+
+{% macro flags(has_draft, base_hash=none, oob=false) -%}
+<span id="draft-flag" data-draft="{{ '1' if has_draft else '0' }}" hidden{% if oob %} hx-swap-oob="true"{% endif %}></span>
+{%- if base_hash %}
+<input type="hidden" id="base-hash" name="base_hash" value="{{ base_hash }}" form="editor-form"{% if oob %} hx-swap-oob="true"{% endif %}>
+{%- endif %}
+{%- endmacro %}

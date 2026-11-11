@@ -3,14 +3,14 @@
 from __future__ import annotations
 
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from decimal import Decimal, InvalidOperation
 from typing import Any
 
 from chronicler.calendar import Calendar, CalendarError, WorldDate
 from chronicler.campaign import View
 from chronicler.document import Document
-from chronicler.markup import Link, Span, parse_line, plain_text
+from chronicler.markup import Link, iter_spans, parse_line, parse_text, plain_text
 
 UPCOMING_DAYS = 7
 _TASK_RE = re.compile(r"^\s*[-*+]\s+\[( |x|X)\]\s+")
@@ -166,17 +166,16 @@ def prep_notes(view: View) -> list[PrepNote]:
             ]
             for line in lines:
                 nodes, _ = parse_line(line)
-                for node in nodes:
-                    if isinstance(node, Span) and node.kind == "prep":
-                        counter += 1
-                        notes.append(
-                            PrepNote(
-                                document.id,
-                                document.name,
-                                f"prep-{counter}",
-                                plain_text(node.children).strip(),
-                            )
-                        )
+                for span in iter_spans(nodes):  # same order the renderer numbers them
+                    if span.kind != "prep":
+                        continue
+                    text = plain_text(span.children).strip()
+                    if span.continued and notes and notes[-1].entry_id == document.id:
+                        previous = notes[-1]
+                        notes[-1] = replace(previous, text=f"{previous.text} {text}".strip())
+                        continue
+                    counter += 1
+                    notes.append(PrepNote(document.id, document.name, f"prep-{counter}", text))
     return notes
 
 
@@ -201,11 +200,12 @@ def _links_to(view: View, text_values: list[Any], target_id: str) -> bool:
     for value in text_values:
         if not isinstance(value, str):
             continue
-        for node in parse_line(value)[0]:
-            if isinstance(node, Link):
-                resolution = view.index.resolve_link(node.target)
-                if resolution.entry_id == target_id:
-                    return True
+        for nodes, _issues in parse_text(value):
+            for node in nodes:
+                if isinstance(node, Link):
+                    resolution = view.index.resolve_link(node.target)
+                    if resolution.entry_id == target_id:
+                        return True
     return False
 
 

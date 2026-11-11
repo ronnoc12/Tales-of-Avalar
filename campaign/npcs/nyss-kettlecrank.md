@@ -13,7 +13,7 @@ location: "[[Valoria#Hollow Quarter]]"
 portrayal:
   mannerisms: Barefoot and eternally smiling; her round goggles glow when she lies (a curse she has learned to work around)
 goals:
-  - { text: "Turn the undercity into a place of beauty, an \"art installation of survival\"" }
+  - {text: "Turn the undercity into a place of beauty, an \"art installation of survival\""}
 tags: [hollow-quarter, inventor]
 ---
 

@@ -7,8 +7,8 @@ kind: weapon (glaive)
 rarity: legendary
 attunement: true
 state: dormant
-holder: null
-sentient: { purpose: "{secret}Consume dragon souls and unmake the Tome of Dragon Memory{/secret}" }
+holder:
+sentient: {purpose: "{secret}Consume dragon souls and unmake the Tome of Dragon Memory{/secret}"}
 tags: [unresolved, dragons]
 ---
 

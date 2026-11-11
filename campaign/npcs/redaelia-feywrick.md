@@ -13,9 +13,9 @@ portrayal:
   mannerisms: Shy, but speaks out of turn when she sees injustice or disrespect toward Casfer or USE
 location: "[[Midcross]]"
 factions:
-  - { faction: "[[USE]]", rank: Secretary and Arcane Operative, branch: "[[Midcross#USE Midcross Outpost]]" }
+  - {faction: "[[USE]]", rank: Secretary and Arcane Operative, branch: "[[Midcross#USE Midcross Outpost]]"}
 relationships:
-  - { to: "[[Casfer Ferndance]]", type: mentored by, note: Admires him; trusts him implicitly }
+  - {to: "[[Casfer Ferndance]]", type: mentored by, note: Admires him; trusts him implicitly}
 tags: [use, midcross, ameliorate]
 ---
 

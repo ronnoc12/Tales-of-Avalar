@@ -10,10 +10,10 @@ party_role: neutral
 disposition: 0.00
 location: "[[Akhram's Oasis]]"
 factions:
-  - { faction: "[[Faythe's Guardians]]", rank: Commander }
+  - {faction: "[[Faythe's Guardians]]", rank: Commander}
 goals:
-  - { text: Secure her own power and protect the Oasis's precarious balance }
-  - { text: Expand the Oasis's influence across the desert and beyond }
+  - {text: Secure her own power and protect the Oasis's precarious balance}
+  - {text: Expand the Oasis's influence across the desert and beyond}
 tags: [akhrams-oasis, ruler]
 ---
 

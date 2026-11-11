@@ -224,3 +224,8 @@ scratch/
 
 # Campaign source docs: tracked for now (may be removed later)
 !lib/
+
+# Chronicler working data inside a campaign: editor drafts and the local database
+# (user accounts, sessions). Never committed.
+_drafts/
+_data/

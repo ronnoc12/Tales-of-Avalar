@@ -2,13 +2,13 @@
 id: the-teeth
 type: faction
 name: Faythe's Guardians
-aliases: [{ name: The Teeth, used_by: "Akhram's Oasis locals" }, "Thena's Teeth", The Guardians]
+aliases: [{name: The Teeth, used_by: "Akhram's Oasis locals"}, "Thena's Teeth", The Guardians]
 kind: military
 leader: "[[Thena]]"
 headquarters: "[[Akhram's Oasis]]"
 public_face: Enigmatic magical sentinels loyal only to Thena
 presence:
-  - { location: "[[Akhram's Oasis]]", role: Patrol the borders and alleys }
+  - {location: "[[Akhram's Oasis]]", role: Patrol the borders and alleys}
 party_view:
   name: The Teeth
 tags: [akhrams-oasis, constructs]

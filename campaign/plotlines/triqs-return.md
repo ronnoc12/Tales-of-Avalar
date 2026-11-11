@@ -8,10 +8,10 @@ summary: A goblin leader who abandoned her people seeks power to save them.
 hooks:
   - Goblins of the Wandering Grove whisper of Triq's return
 actions:
-  - { name: Triq seeks the forgotten temple of Orcus, actor: "[[Triq]]" }
-  - { name: Triq makes her pact and gains the power to raise the dead, actor: "[[Triq]]" }
-  - { name: Mutiny among the Grove's goblins, actor: Hardline goblins, if_ignored: "Goblins who still hate the 'pink skins' turn on the Wandering Grove." }
-  - { name: Triq returns to raise her fallen people as undead, actor: "[[Triq]]", if_ignored: "An undead goblin horde, its souls feeding Orcus, marches to reclaim what was lost." }
+  - {name: Triq seeks the forgotten temple of Orcus, actor: "[[Triq]]"}
+  - {name: Triq makes her pact and gains the power to raise the dead, actor: "[[Triq]]"}
+  - {name: Mutiny among the Grove's goblins, actor: Hardline goblins, if_ignored: "Goblins who still hate the 'pink skins' turn on the Wandering Grove."}
+  - {name: Triq returns to raise her fallen people as undead, actor: "[[Triq]]", if_ignored: "An undead goblin horde, its souls feeding Orcus, marches to reclaim what was lost."}
 if_ignored: Triq becomes Orcus's harbinger with an undead goblin army.
 ---
 

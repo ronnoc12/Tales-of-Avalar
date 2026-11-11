@@ -12,9 +12,9 @@ party_role: friendly
 disposition: 1.50
 location: "[[Valoria]]"
 factions:
-  - { faction: "[[Royal Council of Valoria]]", rank: High Chancellor of Governance }
+  - {faction: "[[Royal Council of Valoria]]", rank: High Chancellor of Governance}
 relationships:
-  - { to: "[[King Alaric III]]", type: childhood best friend }
+  - {to: "[[King Alaric III]]", type: childhood best friend}
 tags: [valoria, council]
 ---
 

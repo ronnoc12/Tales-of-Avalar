@@ -1,0 +1,17 @@
+{% import "_form.html" as form with context %}
+{% from "_dialog.html" import issue_list %}
+<form class="quick-form" hx-post="/edit/{{ doc.id }}/field/{{ spec.key }}" hx-target="this" hx-swap="outerHTML" novalidate>
+  <input type="hidden" name="base_hash" value="{{ base_hash or '' }}">
+  <div class="ef-fields">{{ form.field(spec) }}</div>
+  {% if conflict %}
+    <p class="form-error" role="alert">This page changed on disk since you opened it. <a href="">Reload</a> and try again.</p>
+  {% endif %}
+  {% if error %}<p class="form-error" role="alert">{{ error }}</p>{% endif %}
+  {% for problem in problems or [] %}<p class="form-error" role="alert">{{ problem }}</p>{% endfor %}
+  {{ issue_list(issues) }}
+  <div class="quick-actions">
+    <button class="button button-small">Save</button>
+    <a class="link-button" href="">Cancel</a>
+  </div>
+  {% if names %}<datalist id="entry-names">{% for name in names %}<option value="[[{{ name }}]]">{% endfor %}</datalist>{% endif %}
+</form>

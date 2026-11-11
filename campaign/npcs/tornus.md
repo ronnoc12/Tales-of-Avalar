@@ -10,7 +10,7 @@ party_role: friendly
 disposition: 2.00
 location: "[[BrokRogGnakShragBromKur]]"
 goals:
-  - { text: Unite the warring factions and end the city's centuries of chaos }
+  - {text: Unite the warring factions and end the city's centuries of chaos}
 tags: [brokroggnakshragbromkur, rebel]
 ---
 

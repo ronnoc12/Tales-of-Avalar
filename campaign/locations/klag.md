@@ -14,7 +14,7 @@ magic:
   trained: Welcome, Arcane Concordance or otherwise, if useful to the community; formal membership not required
   untrained: Relatively tolerated (many kobolds have latent draconic magic); dangerous cases get "magical recalibration" or guidance from the Elder Kobold Council, which favors rehabilitation over punishment
 relations:
-  - { to: "[[BrokRogGnakShragBromKur]]", type: sister city, note: Shared history of survival; an uneasy alliance under growing strain }
+  - {to: "[[BrokRogGnakShragBromKur]]", type: sister city, note: Shared history of survival; an uneasy alliance under growing strain}
 tags: [kobolds, underground]
 ---
 

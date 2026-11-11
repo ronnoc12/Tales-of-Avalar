@@ -11,6 +11,16 @@
   </section>
 
   {% if gm %}
+  {% if drafts %}
+  <section class="card card-wide">
+    <h2>Unsaved drafts</h2>
+    <ul class="plain-list">
+      {% for d in drafts %}
+        <li><a href="/edit/{{ d.entry_id }}">{{ d.entry_id }}</a> <span class="muted">saved {{ d.saved_at|replace('T', ' ') }}</span></li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
   <section class="card">
     <h2>Spotlight</h2>
     {% if spotlight %}

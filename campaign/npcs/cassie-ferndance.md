@@ -10,9 +10,9 @@ disposition: 0.00
 alignment: True Neutral
 location: "[[Valoria]]"
 factions:
-  - { faction: "[[USE]]", rank: Headquarters Leader }
+  - {faction: "[[USE]]", rank: Headquarters Leader}
 relationships:
-  - { to: "[[Casfer Ferndance]]", type: twin }
+  - {to: "[[Casfer Ferndance]]", type: twin}
 tags: [use, valoria]
 ---
 

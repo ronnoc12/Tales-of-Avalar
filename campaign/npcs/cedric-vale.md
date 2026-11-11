@@ -9,7 +9,7 @@ party_role: friendly
 disposition: 1.00
 location: "[[Midcross]]"
 factions:
-  - { faction: "[[Midcross Council]]", rank: Head of Public Works }
+  - {faction: "[[Midcross Council]]", rank: Head of Public Works}
 portrayal:
   mannerisms: "Detail-oriented and community-focused."
 tags: [midcross, council]

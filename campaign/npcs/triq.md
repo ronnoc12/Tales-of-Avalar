@@ -11,11 +11,11 @@ disposition: -4.00
 self_view: She will do whatever it takes to end her people's suffering.
 location: "{secret}Seeking a forgotten temple of Orcus{/secret}"
 relationships:
-  - { to: "[[Vargeez]]", type: former second, note: She left the clan in his care }
-  - { to: "[[Orcus]]", type: pact with, secret: true }
+  - {to: "[[Vargeez]]", type: former second, note: She left the clan in his care}
+  - {to: "[[Orcus]]", type: pact with, secret: true}
 goals:
-  - { text: Gain the power to end her people's suffering }
-  - { text: "Raise her fallen people as undead and return to lead them to victory", secret: true }
+  - {text: Gain the power to end her people's suffering}
+  - {text: "Raise her fallen people as undead and return to lead them to victory", secret: true}
 agenda:
   ultimate_goal: A new goblin empire built from the bones of the old
   resources: [Orcus's power to resurrect the dead, Constructs of hellfire steel]

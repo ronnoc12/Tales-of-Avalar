@@ -11,14 +11,14 @@ true_purpose: "{secret}Arcane supremacy: reshape the world through domination an
 motto: "{secret}To control what others worship.{/secret}"
 ranks: [Inner Circle, Sorcerer-Lord, Operative, Scholar]
 presence:
-  - { location: "[[Valoria#Hollow Quarter]]", role: Hidden parasite labs beneath the undercity; abducts or recruits self-taught mages, secret: true }
+  - {location: "[[Valoria#Hollow Quarter]]", role: Hidden parasite labs beneath the undercity; abducts or recruits self-taught mages, secret: true}
 relations:
-  - { to: "[[Arcane Concordance]]", type: rival }
-  - { to: "[[Wardens of Ethereal Balance]]", type: enemy }
-  - { to: "[[Emberlight Collective]]", type: infiltrating, note: Agents pose as generous patrons, secret: true }
+  - {to: "[[Arcane Concordance]]", type: rival}
+  - {to: "[[Wardens of Ethereal Balance]]", type: enemy}
+  - {to: "[[Emberlight Collective]]", type: infiltrating, note: Agents pose as generous patrons, secret: true}
 goals:
-  - { text: "Establish itself as a global superpower that reshapes the world to its vision of peace and prosperity", secret: true }
-  - { text: Fix the flaw in the parasitic control organism, secret: true }
+  - {text: "Establish itself as a global superpower that reshapes the world to its vision of peace and prosperity", secret: true}
+  - {text: Fix the flaw in the parasitic control organism, secret: true}
 agenda:
   ultimate_goal: Dominance through arcane supremacy
   resources: [Arcane research and dark alchemists, Acquired relics and artifacts, Summoned and bound creatures, Genetically modified parasitic organism, Infiltrators in governments and noble houses]

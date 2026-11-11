@@ -57,7 +57,8 @@ def test_hanging_threads(fixture_campaign: Campaign) -> None:
 def test_prep_notes_and_tasks(fixture_campaign: Campaign) -> None:
     notes = home.prep_notes(fixture_campaign.gm)
     assert [(n.entry_id, n.anchor, n.text) for n in notes] == [
-        ("midcross", "prep-1", "Remind them the bridge is out")
+        ("casfer-ferndance", "prep-1", "CANARY-PREP-IN-SECRET"),  # nested inside a secret
+        ("midcross", "prep-1", "Remind them the bridge is out"),
     ]
     tasks = home.prep_tasks(fixture_campaign.gm)
     assert [(t.entry_id, t.done, t.total) for t in tasks] == [("ashvault-dungeon", 1, 3)]
@@ -65,9 +66,26 @@ def test_prep_notes_and_tasks(fixture_campaign: Campaign) -> None:
 
 
 def test_prep_anchor_matches_renderer(fixture_campaign: Campaign) -> None:
-    note = home.prep_notes(fixture_campaign.gm)[0]
-    html = fixture_campaign.gm.renderer.body(fixture_campaign.gm.index.docs[note.entry_id])
-    assert f'id="{note.anchor}">{note.text}' in html
+    for note in home.prep_notes(fixture_campaign.gm):
+        html = fixture_campaign.gm.renderer.body(fixture_campaign.gm.index.docs[note.entry_id])
+        assert f'id="{note.anchor}">{note.text}' in html
+
+
+def test_multi_line_prep_note_is_one_note(make_campaign: MakeCampaign) -> None:
+    campaign = make_campaign(
+        {
+            "npcs/a.md": entry(
+                "a", "npc", "{prep}Ask about\nthe bridge{/prep}\n\n{prep}Second{/prep}"
+            )
+        }
+    )
+    notes = home.prep_notes(campaign.gm)
+    assert [(n.anchor, n.text) for n in notes] == [
+        ("prep-1", "Ask about the bridge"),
+        ("prep-2", "Second"),
+    ]
+    html = campaign.gm.renderer.body(campaign.gm.index.docs["a"])
+    assert html.count('id="prep-') == 2
 
 
 def test_spotlight_most_neglected_first(fixture_campaign: Campaign) -> None:

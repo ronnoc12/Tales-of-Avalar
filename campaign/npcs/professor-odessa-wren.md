@@ -9,7 +9,7 @@ party_role: friendly
 disposition: 2.00
 location: "[[Valoria]]"
 factions:
-  - { faction: "[[Royal Council of Valoria]]", rank: People's Representative }
+  - {faction: "[[Royal Council of Valoria]]", rank: People's Representative}
 tags: [valoria, council]
 ---
 

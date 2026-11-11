@@ -6,7 +6,7 @@ role: Former party member; warlock of Nyxylia
 life_state: dead
 location: "[[Feywild]]"
 relationships:
-  - { to: "[[Nyxylia]]", type: husband, note: Her most trusted warlock and mortal ally }
+  - {to: "[[Nyxylia]]", type: husband, note: Her most trusted warlock and mortal ally}
 tags: [former-pc, feywild]
 ---
 

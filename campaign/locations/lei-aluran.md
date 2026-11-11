@@ -14,7 +14,7 @@ magic:
   trained: Only those proven worthy through dedication, service, or birthright may study formal magic (Arcane Concordance membership, or Aramente training with the Wandering Grove and high druids); watched by the Council of Elders
   untrained: Wild magic is feared and seen as a corruption of nature's flow; offenders face exile, forced isolation, or re-education to suppress their abilities
 relations:
-  - { to: "[[Celestial Alliance]]", type: watched by, note: The Alliance monitors such a magically potent kingdom }
+  - {to: "[[Celestial Alliance]]", type: watched by, note: The Alliance monitors such a magically potent kingdom}
 tags: [elves, kingdom, isolated]
 ---
 

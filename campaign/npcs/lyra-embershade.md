@@ -9,8 +9,8 @@ alignment: Neutral Good
 party_role: friendly
 disposition: 1.50
 factions:
-  - { faction: "[[Order of the Eternal Wardens]]", rank: Grandmaster }
-  - { faction: "[[Faction of the Elemental Mystics]]", rank: Grandmaster }
+  - {faction: "[[Order of the Eternal Wardens]]", rank: Grandmaster}
+  - {faction: "[[Faction of the Elemental Mystics]]", rank: Grandmaster}
 tags: [eternal-wardens, grandmaster]
 ---
 

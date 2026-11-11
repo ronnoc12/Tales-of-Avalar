@@ -10,12 +10,12 @@ party_role: neutral
 disposition: -1.00
 location: "[[Feywild]]"
 factions:
-  - { faction: "[[Feywild Archfey Council]]", rank: Archfey }
+  - {faction: "[[Feywild Archfey Council]]", rank: Archfey}
 relationships:
-  - { to: "[[Toremona]]", type: rival, note: Bitter rivalry over dreamscapes, despite Toremona's friendliness }
+  - {to: "[[Toremona]]", type: rival, note: "Bitter rivalry over dreamscapes, despite Toremona's friendliness"}
 goals:
-  - { text: Expand her forest and reclaim land lost to rival archfey }
-  - { text: Harvest rare magical plants and control the secrets of fey flora }
+  - {text: Expand her forest and reclaim land lost to rival archfey}
+  - {text: Harvest rare magical plants and control the secrets of fey flora}
 tags: [archfey, feywild]
 ---
 

@@ -17,10 +17,10 @@ magic:
 market:
   size: city
 relations:
-  - { to: "[[Valoria]]", type: ally, note: Close ally and trade partner }
+  - {to: "[[Valoria]]", type: ally, note: Close ally and trade partner}
 factions:
-  - { faction: "[[USE]]", presence: Branch outpost, site: "[[Midcross#USE Midcross Outpost]]" }
-  - { faction: "[[Midcross Council]]", presence: Governing advisory council }
+  - {faction: "[[USE]]", presence: Branch outpost, site: "[[Midcross#USE Midcross Outpost]]"}
+  - {faction: "[[Midcross Council]]", presence: Governing advisory council}
 tags: [trade-hub, starting-city]
 ---
 

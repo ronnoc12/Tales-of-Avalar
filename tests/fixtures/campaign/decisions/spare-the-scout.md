@@ -6,6 +6,6 @@ state: pending
 deadline: 12 Seedmoon 1500 AS
 plot: "[[Ravenwood Silence]]"
 options:
-  - { name: Spare him, impact: CANARY-DECISION-IMPACT }
+  - {name: Spare him, impact: CANARY-DECISION-IMPACT}
 ---
 CANARY-DECISION-BODY

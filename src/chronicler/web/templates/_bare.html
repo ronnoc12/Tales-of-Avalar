@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en" data-theme="dark" data-font="default">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ campaign_name }}{% endblock %} · Chronicler</title>
+  <script>
+    (function () {
+      try {
+        var d = document.documentElement;
+        d.dataset.theme = localStorage.getItem("chronicler-theme") || "dark";
+        d.dataset.font = localStorage.getItem("chronicler-font") || "default";
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="/static/css/chronicler.css">
+  <script src="/static/js/htmx.min.js" defer></script>
+  <script src="/static/js/htmx-json-enc.js" defer></script>
+</head>
+<body class="bare" hx-ext="json-enc" hx-headers='{"X-Chronicler": "1"}'>
+  <main class="auth-card">
+    <h1 class="brand-title">{{ campaign_name }}</h1>
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

@@ -1,0 +1,5 @@
+{% for item in results %}
+<li><button type="button" class="pick" data-pick="{{ item.target }}" data-kind="{{ item.kind }}">{{ item.label }}</button></li>
+{% else %}
+<li class="muted">Nothing matches.</li>
+{% endfor %}

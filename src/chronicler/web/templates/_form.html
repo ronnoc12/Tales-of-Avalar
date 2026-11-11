@@ -1,0 +1,104 @@
+{#- Edit-form widgets generated from forms.FieldSpec. Import "with context" (uses doc.id).
+
+Names (read back by forms.decode_form): "f:<path>" holds a value, "p:<path>" marks a key
+that was in the file, "r:<path>" marks a row, "k:<path>" = "yaml" marks a YAML box.
+Row tools are HTMX buttons: the server re-renders the whole top-level field.
+-#}
+
+{% macro number_text(spec, value) -%}
+{%- if value is none -%}{%- elif spec.kind in ('score', 'change', 'decimal') and value is number -%}{{ '%.2f'|format(value) }}{%- else -%}{{ value }}{%- endif -%}
+{%- endmacro %}
+
+{% macro input(spec) -%}
+{%- set k = spec.kind -%}{%- set name = 'f:' ~ spec.path -%}{%- set value = spec.value -%}
+{%- set uid = 'in-' ~ spec.path|replace('.', '-')|replace(' ', '_') -%}
+{%- if k == 'readonly' -%}
+  <span class="ef-readonly">{{ value }}</span>
+{%- elif k == 'enum' -%}
+  <select class="ef-input" id="{{ uid }}" name="{{ name }}">
+    <option value="">—</option>
+    {%- for option in spec.options %}
+    <option value="{{ option }}" {{ 'selected' if value is not none and option == value|string }}>{{ option }}</option>
+    {%- endfor %}
+    {%- if value is not none and value|string not in spec.options %}
+    <option value="{{ value }}" selected>{{ value }} (not a valid choice)</option>
+    {%- endif %}
+  </select>
+{%- elif k in ('score', 'change', 'int', 'number', 'decimal') -%}
+  <input class="ef-input" id="{{ uid }}" name="{{ name }}" type="number" step="{{ spec.step }}"
+    {%- if spec.minimum is not none %} min="{{ spec.minimum }}"{% endif %}
+    {%- if spec.maximum is not none %} max="{{ spec.maximum }}"{% endif %}
+    value="{{ number_text(spec, value) }}">
+{%- elif k == 'bool' -%}
+  <input class="ef-input" id="{{ uid }}" name="{{ name }}" type="checkbox" value="1" {{ 'checked' if value }}>
+{%- elif k == 'tristate' -%}
+  <select class="ef-input" id="{{ uid }}" name="{{ name }}">
+    <option value="" {{ 'selected' if value is none }}>Default for this type</option>
+    <option value="true" {{ 'selected' if value is true }}>Yes</option>
+    <option value="false" {{ 'selected' if value is false }}>No</option>
+  </select>
+{%- elif k == 'link' -%}
+  <input class="ef-input" id="{{ uid }}" name="{{ name }}" value="{{ value if value is not none }}"
+    list="entry-names" autocomplete="off" placeholder="[[Name]]">
+{%- elif k == 'text' -%}
+  <textarea class="ef-input" id="{{ uid }}" name="{{ name }}" rows="{{ 1 if not value or '\n' not in value|string else 3 }}" spellcheck="true">
+{{ value if value is not none }}</textarea>
+{%- elif k in ('list', 'link-list') -%}
+  <textarea class="ef-input" id="{{ uid }}" name="{{ name }}" rows="{{ [2, (value or [])|length + 1]|max }}" spellcheck="true" placeholder="One per line">
+{{ (value or [])|join('\n') }}</textarea>
+{%- else -%}
+  <input type="hidden" name="k:{{ spec.path }}" value="yaml">
+  <textarea class="ef-input ef-yaml" id="{{ uid }}" name="{{ name }}" rows="{{ [[spec.yaml_text.count('\n') + 2, 2]|max, 12]|min }}" spellcheck="false" placeholder="YAML">
+{{ spec.yaml_text }}</textarea>
+{%- endif -%}
+{%- endmacro %}
+
+{% macro row_tools(top, index, count) -%}
+<div class="ef-row-tools">
+  {%- for op, label, mark, enabled in [('up', 'Move up', '↑', index > 0), ('down', 'Move down', '↓', index < count - 1), ('remove', 'Remove', '✕', true)] %}
+  <button type="button" class="icon-button{{ ' danger' if op == 'remove' }}" title="{{ label }}" aria-label="{{ label }}"
+    {{ 'disabled' if not enabled }}
+    hx-post="/edit/{{ doc.id }}/rows" hx-include="closest form" hx-vals='{{ {"op": op, "field": top, "index": index}|tojson }}'
+    hx-target="closest .ef-top" hx-swap="outerHTML">{{ mark }}</button>
+  {%- endfor %}
+</div>
+{%- endmacro %}
+
+{% macro field(spec) -%}
+{%- set top = '.' not in spec.path -%}
+<div class="ef ef-{{ spec.kind }}{{ ' ef-top' if top }}" id="field-{{ spec.path|replace('.', '-')|replace(' ', '_') }}" data-key="{{ spec.key }}">
+  {%- if spec.present %}<input type="hidden" name="p:{{ spec.path }}" value="1">{% endif %}
+  {%- if spec.kind == 'group' %}
+  <fieldset class="ef-group">
+    <legend>{{ spec.label }}</legend>
+    <div class="ef-children">
+      {%- for child in spec.children %}{{ field(child) }}{% endfor %}
+    </div>
+  </fieldset>
+  {%- elif spec.kind in ('rows', 'aliases') %}
+  <fieldset class="ef-group">
+    <legend>{{ spec.label }}</legend>
+    <ol class="ef-rows">
+      {%- for fields in spec.rows %}
+      <li class="ef-row">
+        <input type="hidden" name="r:{{ spec.path }}.{{ loop.index0 }}" value="1">
+        <div class="ef-row-fields">{% for child in fields %}{{ field(child) }}{% endfor %}</div>
+        {%- if top %}{{ row_tools(spec.path, loop.index0, spec.rows|length) }}{% endif %}
+      </li>
+      {%- endfor %}
+    </ol>
+    {%- if top %}
+    <button type="button" class="link-button" hx-post="/edit/{{ doc.id }}/rows" hx-include="closest form"
+      hx-vals='{{ {"op": "add", "field": spec.path, "index": spec.rows|length}|tojson }}'
+      hx-target="closest .ef-top" hx-swap="outerHTML">+ Add</button>
+    {%- endif %}
+  </fieldset>
+  {%- else %}
+  <label class="ef-label" for="in-{{ spec.path|replace('.', '-')|replace(' ', '_') }}">{{ spec.label }}
+    {%- if spec.hint == 'extra' %} <span class="ef-hint">not in this type's schema</span>
+    {%- elif spec.hint %} <span class="ef-hint">{{ spec.hint }}</span>{% endif %}
+  </label>
+  {{ input(spec) }}
+  {%- endif %}
+</div>
+{%- endmacro %}

@@ -8,6 +8,7 @@ party_role: friendly
 disposition: 1.00
 location: "[[Ravenwood]]"
 tags: [ravenwood]
+life_state: undead
 ---
 
 ## Overview

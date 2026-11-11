@@ -9,7 +9,7 @@ party_role: neutral
 disposition: 0.00
 location: "[[Midcross]]"
 factions:
-  - { faction: "[[Midcross Council]]", rank: Head of Infrastructure }
+  - {faction: "[[Midcross Council]]", rank: Head of Infrastructure}
 portrayal:
   mannerisms: "Pragmatic and meticulous; focused on efficiency and reliability, but can seem aloof."
 tags: [midcross, council]

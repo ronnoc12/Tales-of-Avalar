@@ -7,7 +7,7 @@ parent: "[[Emberwound Expanse]]"
 kind: dungeon
 terrain: Volcanic shrine of magma-glass and flame crystal
 factions:
-  - { faction: "[[Unsighted Order]]", presence: Guards Vhallion's phylactery; maintains modern wards, secret: true }
+  - {faction: "[[Unsighted Order]]", presence: Guards Vhallion's phylactery; maintains modern wards, secret: true}
 tags: [dungeon, dragons, vhallion]
 ---
 

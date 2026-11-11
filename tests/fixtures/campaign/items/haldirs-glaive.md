@@ -7,6 +7,6 @@ kind: weapon (glaive)
 rarity: legendary
 attunement: true
 state: dormant
-sentient: { int: 14, purpose: CANARY-SENTIENT-PURPOSE }
+sentient: {int: 14, purpose: CANARY-SENTIENT-PURPOSE}
 ---
 Once wielded by [[Haldir]].

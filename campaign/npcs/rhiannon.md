@@ -10,15 +10,15 @@ party_role: neutral
 disposition: 0.50
 location: "[[Feywild]]"
 factions:
-  - { faction: "[[Feywild Archfey Council]]", rank: Archfey }
+  - {faction: "[[Feywild Archfey Council]]", rank: Archfey}
 relationships:
-  - { to: "[[Toremona]]", type: wary of, note: Unpredictable dreamscapes disrupt her carefully constructed paths }
-  - { to: "[[Nyxylia]]", type: respects, note: Respects her discipline; amused by Haldir's mortal impulsiveness }
-  - { to: "[[Lady Morivelle]]", type: friendly rival, note: Rhiannon loves subtle challenges; Morivelle favors dramatic, emotional tests }
+  - {to: "[[Toremona]]", type: wary of, note: Unpredictable dreamscapes disrupt her carefully constructed paths}
+  - {to: "[[Nyxylia]]", type: respects, note: Respects her discipline; amused by Haldir's mortal impulsiveness}
+  - {to: "[[Lady Morivelle]]", type: friendly rival, note: "Rhiannon loves subtle challenges; Morivelle favors dramatic, emotional tests"}
 goals:
-  - { text: "Preserve the \"logic\" of cause and effect in her domain" }
-  - { text: Test mortals and fey; every challenge solved strengthens the fabric of reality }
-  - { text: Gather knowledge of mortal decisions to understand choice and consequence }
+  - {text: "Preserve the \"logic\" of cause and effect in her domain"}
+  - {text: Test mortals and fey; every challenge solved strengthens the fabric of reality}
+  - {text: Gather knowledge of mortal decisions to understand choice and consequence}
 tags: [archfey, feywild]
 ---
 

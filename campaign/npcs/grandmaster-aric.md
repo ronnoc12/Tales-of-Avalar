@@ -9,8 +9,8 @@ alignment: Lawful Good
 party_role: friendly
 disposition: 2.00
 factions:
-  - { faction: "[[Order of the Eternal Wardens]]", rank: Grandmaster }
-  - { faction: "[[Faction of the Harmonious Sages]]", rank: Grandmaster }
+  - {faction: "[[Order of the Eternal Wardens]]", rank: Grandmaster}
+  - {faction: "[[Faction of the Harmonious Sages]]", rank: Grandmaster}
 tags: [eternal-wardens, grandmaster]
 ---
 

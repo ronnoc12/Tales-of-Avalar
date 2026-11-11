@@ -11,12 +11,12 @@ party_role: neutral
 disposition: 0.00
 location: "[[Valoria]]"
 factions:
-  - { faction: "[[Royal Council of Valoria]]", rank: King }
+  - {faction: "[[Royal Council of Valoria]]", rank: King}
 relationships:
-  - { to: "[[Lady Seraphine Dorne]]", type: childhood best friend, note: Deep mutual love, never spoken aloud }
-  - { to: "[[Vhallion]]", type: possessed by, note: The lich escaped the box into him }
+  - {to: "[[Lady Seraphine Dorne]]", type: childhood best friend, note: "Deep mutual love, never spoken aloud"}
+  - {to: "[[Vhallion]]", type: possessed by, note: The lich escaped the box into him}
 goals:
-  - { text: Stability, prosperity, and unity for Valoria }
+  - {text: "Stability, prosperity, and unity for Valoria"}
 tags: [valoria, ruler]
 ---
 

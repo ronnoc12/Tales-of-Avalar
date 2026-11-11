@@ -9,7 +9,7 @@ party_role: friendly
 disposition: 2.00
 location: "[[Midcross]]"
 factions:
-  - { faction: "[[Midcross Council]]", rank: Chief Diplomat }
+  - {faction: "[[Midcross Council]]", rank: Chief Diplomat}
 portrayal:
   mannerisms: "Charismatic and idealistic; passionate about diplomacy and the power of alliances and outside support."
 tags: [midcross, council]

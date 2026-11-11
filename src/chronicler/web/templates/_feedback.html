@@ -1,0 +1,4 @@
+{% import "_editor_parts.html" as parts %}
+{{ parts.status_and_issues(status, errors, warnings, problems) }}
+{% if show_previews %}{{ parts.previews(preview_gm, preview_player, oob=true) }}{% endif %}
+{{ parts.flags(has_draft, base_hash, oob=true) }}

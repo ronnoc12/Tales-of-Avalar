@@ -9,7 +9,7 @@ party_role: neutral
 disposition: -1.00
 location: "[[Midcross]]"
 factions:
-  - { faction: "[[Midcross Council]]", rank: Head of Defense }
+  - {faction: "[[Midcross Council]]", rank: Head of Defense}
 portrayal:
   mannerisms: "Stoic and disciplined; a seasoned warrior with a no-nonsense approach to security."
 tags: [midcross, council]

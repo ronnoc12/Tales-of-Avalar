@@ -1,0 +1,9 @@
+{% from "_dialog.html" import dialog %}
+{% call dialog("The page changed on disk") %}
+  <p>This page was changed outside the editor (for example in VS Code) since you started. To keep things in sync, your edits were not written to the page. They were saved here instead:</p>
+  <p><code>{{ path }}</code></p>
+  <p>Open that file to copy your work back. The editor will now load the current version.</p>
+  <div class="modal-actions">
+    <a class="button" href="/edit/{{ entry_id }}">Reload the editor</a>
+  </div>
+{% endcall %}

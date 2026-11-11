@@ -4,6 +4,7 @@ from pathlib import Path
 
 import pytest
 
+from chronicler import cli
 from chronicler.cli import build_parser, main
 from tests.conftest import FIXTURE, MakeCampaign, entry
 
@@ -102,3 +103,26 @@ def test_serve_runs_uvicorn(
     assert main(["serve", str(FIXTURE), "--port", "8123"]) == 0
     assert calls == [{"host": "127.0.0.1", "port": 8123, "log_level": "warning"}]
     assert "http://127.0.0.1:8123" in capsys.readouterr().out
+
+
+def test_user_commands(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    answers = iter(["correct horse", "correct horse", "new password", "new password", "a", "b"])
+    monkeypatch.setattr(cli.getpass, "getpass", lambda _prompt: next(answers))
+    campaign = str(tmp_path)
+    assert cli.main(["user", "add", "Heather", "--role", "gm", "--campaign", campaign]) == 0
+    assert cli.main(["user", "list", "--campaign", campaign]) == 0
+    assert "Heather  (GM)" in capsys.readouterr().out
+    assert cli.main(["user", "reset-password", "Heather", "--campaign", campaign]) == 0
+    assert cli.main(["user", "add", "Jo", "--campaign", campaign]) == 1  # passwords differ
+    assert cli.main(["user", "add", "--campaign", campaign]) == 2  # no name
+    assert cli.main(["user", "list", "--campaign", str(tmp_path / "missing")]) == 2
+
+
+def test_user_command_reports_rule_errors(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    monkeypatch.setattr(cli.getpass, "getpass", lambda _prompt: "short")
+    assert cli.main(["user", "add", "Jo", "--campaign", str(tmp_path)]) == 1
+    assert "at least 8" in capsys.readouterr().err

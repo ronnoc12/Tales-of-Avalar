@@ -2,7 +2,7 @@
 id: faythe-kazula
 type: npc
 name: Faythe Kazula
-aliases: [Faythe, Archmage Faythe Kazula, { name: Fayeth Kazula, search_only: true }, { name: Cassandra, search_only: true }]
+aliases: [Faythe, Archmage Faythe Kazula, {name: Fayeth Kazula, search_only: true}, {name: Cassandra, search_only: true}]
 pronouns: she/her
 role: Archmage and founder of the Arcane Concordance
 alignment: Lawful Evil
@@ -10,11 +10,11 @@ party_role: antagonist
 disposition: 1.00
 self_view: Magic users will no longer live in fear; those who persecuted them must answer for it.
 factions:
-  - { faction: "[[Arcane Concordance]]", rank: Archmage }
+  - {faction: "[[Arcane Concordance]]", rank: Archmage}
 goals:
-  - { text: A world where magic users are respected and revered, not feared }
-  - { text: "Infiltrate and manipulate society's power structures until magic users, under her, reign supreme", secret: true }
-  - { text: "Make non-magical people atone for the persecution of mages", secret: true }
+  - {text: "A world where magic users are respected and revered, not feared"}
+  - {text: "Infiltrate and manipulate society's power structures until magic users, under her, reign supreme", secret: true}
+  - {text: "Make non-magical people atone for the persecution of mages", secret: true}
 agenda:
   ultimate_goal: A world order of magical supremacy with non-mages made to atone
   resources: ["[[Arcane Concordance]] and its reputation", Graduates and agents placed as spies across the realm, "[[Faythe's Guardians]] (via her pact with Thena's city)"]

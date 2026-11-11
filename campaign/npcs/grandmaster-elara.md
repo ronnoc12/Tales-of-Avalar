@@ -9,8 +9,8 @@ alignment: Lawful Good
 party_role: friendly
 disposition: 1.00
 factions:
-  - { faction: "[[Order of the Eternal Wardens]]", rank: Grandmaster }
-  - { faction: "[[Faction of the Enlightened Scholars]]", rank: Grandmaster }
+  - {faction: "[[Order of the Eternal Wardens]]", rank: Grandmaster}
+  - {faction: "[[Faction of the Enlightened Scholars]]", rank: Grandmaster}
 tags: [eternal-wardens, grandmaster]
 ---
 

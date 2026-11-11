@@ -8,7 +8,7 @@ leader: "[[Tarren Milwyn]]"
 public_face: A humanitarian and investigative alliance led by a revered aasimar, promoting peace and aiding those in crisis
 true_purpose: "{secret}Guided from behind the scenes by an ancient, powerful celestial being whose presence is hidden from the public{/secret}"
 relations:
-  - { to: "[[Lei-aluran]]", type: monitors, note: Vested interest in such a magically potent kingdom }
+  - {to: "[[Lei-aluran]]", type: monitors, note: Vested interest in such a magically potent kingdom}
 tags: [good, humanitarian]
 ---
 

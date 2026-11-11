@@ -8,7 +8,7 @@ leader: "[[Lord Burgenroot]]"
 headquarters: "[[Midcross]]"
 public_face: Lord Burgenroot's advisory council of merchants, guild leaders, and advisors
 presence:
-  - { location: "[[Midcross]]", role: Governing advisory council }
+  - {location: "[[Midcross]]", role: Governing advisory council}
 tags: [government, midcross]
 ---
 

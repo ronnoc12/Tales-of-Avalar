@@ -1,0 +1,3 @@
+{% from "_dialog.html" import issue_list %}
+{% if message %}<p class="form-error" role="alert">{{ message }}</p>{% endif %}
+{{ issue_list(issues) }}

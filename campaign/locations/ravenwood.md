@@ -10,7 +10,7 @@ government: Local mayor; decisions heavily influenced by the milling company
 terrain: Dense forest of black-sap trees and rolling hills, between two mountains
 market:
   size: village
-  price_mods: { lumber: 0.70 }
+  price_mods: {lumber: 0.70}
 tags: [lumber, isolated]
 ---
 

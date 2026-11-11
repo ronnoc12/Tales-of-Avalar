@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Users{% endblock %}
+{% block content %}
+<article class="users-page">
+  <h1 class="page-title">Users</h1>
+  <p class="muted">Players only ever see the Player view and cannot edit. GMs see and edit everything.</p>
+  <table class="users-table">
+    <thead><tr><th>Name</th><th>Role</th><th>New password</th><th></th></tr></thead>
+    <tbody>
+      {% for u in users %}
+      <tr>
+        <td>{{ u.username }}{% if u.id == user.id %} <span class="muted">(you)</span>{% endif %}</td>
+        <td>{{ 'GM' if u.gm else 'Player' }}</td>
+        <td>
+          <form class="inline-row" hx-post="/users/{{ u.username|urlencode }}/password" hx-target="next .row-message">
+            <input name="password" type="password" autocomplete="new-password" placeholder="8+ characters" aria-label="New password for {{ u.username }}">
+            <button class="button button-small">Set</button>
+          </form>
+          <span class="row-message" role="status"></span>
+        </td>
+        <td>{% if u.id != user.id %}
+          <button type="button" class="link-button danger" hx-post="/users/{{ u.username|urlencode }}/remove"
+            hx-confirm="Remove {{ u.username }}? They will no longer be able to log in." hx-target="#users-message">Remove</button>
+        {% endif %}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div id="users-message" role="status"></div>
+  <form class="auth-form inline-form" hx-post="/users" hx-target="#users-message" novalidate>
+    <h2>Add an account</h2>
+    <label>Name <input name="username" required></label>
+    <label>Password (at least 8 characters) <input name="password" type="password" autocomplete="new-password" required></label>
+    <label>Role
+      <select name="role"><option value="player">Player</option><option value="gm">GM</option></select>
+    </label>
+    <button class="button">Add account</button>
+  </form>
+</article>
+{% endblock %}

@@ -18,7 +18,7 @@ market:
   banned: [arcane magic items]
   allowed: [god relics, clerical and divine magic items]
 factions:
-  - { faction: "[[The Enlightened]]", presence: Stronghold and ideological heart }
+  - {faction: "[[The Enlightened]]", presence: Stronghold and ideological heart}
 tags: [anti-magic, theocracy]
 ---
 

@@ -10,8 +10,8 @@ size: Decentralized network of small branches across the realm
 public_face: Intermediaries connecting clients with skilled operatives, discreetly and efficiently
 ranks: [Central Council, Guildmaster (branch leader), Operative]
 presence:
-  - { location: "[[Midcross]]", role: Branch outpost led by Casfer Ferndance }
-  - { location: "[[Valoria]]", role: Headquarters, run by Cassie Ferndance }
+  - {location: "[[Midcross]]", role: Branch outpost led by Casfer Ferndance}
+  - {location: "[[Valoria]]", role: "Headquarters, run by Cassie Ferndance"}
 tags: [guild, espionage, neutral]
 ---
 

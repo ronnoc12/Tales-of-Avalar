@@ -11,8 +11,8 @@ party_role: friendly
 disposition: 1.50
 location: "[[Lei-aluran]]"
 relationships:
-  - { to: "[[Feyrith]]", type: consort, note: Mutual respect and love }
-  - { to: "[[Alaris]]", type: childhood friend, note: Her most trusted advisor }
+  - {to: "[[Feyrith]]", type: consort, note: Mutual respect and love}
+  - {to: "[[Alaris]]", type: childhood friend, note: Her most trusted advisor}
 tags: [lei-aluran, ruler, elves]
 ---
 

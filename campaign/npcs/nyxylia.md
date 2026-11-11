@@ -2,7 +2,7 @@
 id: nyxylia
 type: npc
 name: Nyxylia
-aliases: [Nyxie, { name: Nyxis, search_only: true }, High Sovereign of Defense]
+aliases: [Nyxie, {name: Nyxis, search_only: true}, High Sovereign of Defense]
 pronouns: she/her
 role: Archfey, High Sovereign of Defense
 alignment: Lawful Neutral
@@ -12,13 +12,13 @@ location: "[[Feywild]]"
 portrayal:
   mannerisms: Stoic, pragmatic, terrifyingly competent; unwaveringly neutral in plane politics, but was bubbly, warm, and adorably vulnerable with Haldir
 factions:
-  - { faction: "[[Feywild Archfey Council]]", rank: High Sovereign of Defense }
+  - {faction: "[[Feywild Archfey Council]]", rank: High Sovereign of Defense}
 relationships:
-  - { to: "[[Haldir]]", type: widow, note: Deeply married to Haldir, her most trusted warlock and mortal ally }
-  - { to: "[[Rhiannon]]", type: respected by, note: Rhiannon respects her discipline }
+  - {to: "[[Haldir]]", type: widow, note: "Deeply married to Haldir, her most trusted warlock and mortal ally"}
+  - {to: "[[Rhiannon]]", type: respected by, note: Rhiannon respects her discipline}
 goals:
-  - { text: Maintain draconic balance and the long-term stability of the dragon population }
-  - { text: Prevent unapproved dragon hatches and breaches }
+  - {text: Maintain draconic balance and the long-term stability of the dragon population}
+  - {text: Prevent unapproved dragon hatches and breaches}
 tags: [archfey, feywild]
 ---
 

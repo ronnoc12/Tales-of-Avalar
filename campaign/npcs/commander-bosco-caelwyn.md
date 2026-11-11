@@ -9,7 +9,7 @@ party_role: neutral
 disposition: 0.00
 location: "[[Valoria]]"
 factions:
-  - { faction: "[[Royal Council of Valoria]]", rank: Marshal of the Crown }
+  - {faction: "[[Royal Council of Valoria]]", rank: Marshal of the Crown}
 tags: [valoria, council]
 ---
 

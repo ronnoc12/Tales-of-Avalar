@@ -9,7 +9,7 @@ party_role: neutral
 disposition: 0.50
 location: "[[Valoria]]"
 factions:
-  - { faction: "[[Royal Council of Valoria]]", rank: Minister of Trade and Infrastructure }
+  - {faction: "[[Royal Council of Valoria]]", rank: Minister of Trade and Infrastructure}
 tags: [valoria, council]
 ---
 

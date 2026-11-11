@@ -1,0 +1,18 @@
+{% from "_dialog.html" import dialog, cancel %}
+{% call dialog("Delete " ~ doc.name ~ "?") %}
+  <p>This deletes the file and every draft of it. It cannot be undone here.</p>
+  {% if preview.uncommitted is true %}
+    <p class="banner banner-warn">This file has changes git has not committed. Git cannot restore what it never saved.</p>
+  {% elif preview.uncommitted is none %}
+    <p class="muted">Could not check git for uncommitted changes.</p>
+  {% endif %}
+  {% if backlinks %}
+    <p>These pages link to it; those links will break:</p>
+    <ul>{% for entry_id, name in backlinks %}<li><a href="/entry/{{ entry_id }}">{{ name }}</a></li>{% endfor %}</ul>
+  {% endif %}
+  {% if preview.drafts %}<p>Drafts removed: {{ preview.drafts|join(', ') }}</p>{% endif %}
+  <form hx-post="/edit/{{ doc.id }}/delete">
+    <input type="hidden" name="base_hash" value="{{ base_hash or '' }}">
+    <div class="modal-actions">{{ cancel() }}<button class="button danger">Delete for good</button></div>
+  </form>
+{% endcall %}
